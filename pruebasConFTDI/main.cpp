@@ -207,6 +207,13 @@ FT_HANDLE* lcdInit(int iDevice) {
 				Sleep(1);
 				cout << "H" << endl;
 
+				//
+				lcdWriteIR(result, LCD_CONTROL | LCD_CTRL_DISPLAY_ON | LCD_CTRL_CURSOR_ON | LCD_CTRL_BLINK_ON);
+				Sleep(1);
+				lcdWriteIR(result, LCD_CONTROL | LCD_CTRL_DISPLAY_OFF | LCD_CTRL_CURSOR_OFF | LCD_CTRL_BLINK_OFF);
+				Sleep(1);
+				//
+
 				cout << "SET" << endl;
 			}
 			else {
