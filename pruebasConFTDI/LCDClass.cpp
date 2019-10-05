@@ -18,12 +18,14 @@ LCD::LCD(int iDevice = 5)
 
 	bool exit = false;
 
-	while (status != FT_OK && ((current - start) < MaxTime) && exit == false) {
+	while (status != FT_OK && ((current - start) < MaxTime) && exit == false) 
+	{
 		status = FT_OpenEx((void*)LCDdescription, FT_OPEN_BY_DESCRIPTION, &lcdHandler);
 		if (status == FT_OK) {
 			BYTE Mask = 0xFF;
 			BYTE Mode = 1;
-			if (FT_SetBitMode(lcdHandler, Mask, Mode) == FT_OK) {
+			if (FT_SetBitMode(lcdHandler, Mask, Mode) == FT_OK) 
+			{
 				//Inicializa como debe ser
 				BYTE send;
 
@@ -98,8 +100,8 @@ LCD::LCD(int iDevice = 5)
 
 void LCD::lcdWriteNibble(BYTE valor)
 {
-	DWORD size_sent;
-	FT_Write(&lcdHandler, &valor, 1, &size_sent);
+	DWORD size_sent = 0;
+	FT_Write(lcdHandler, &valor, 1, &size_sent);
 
 	//Debug:
 	printf("0x%02X\n", valor);
