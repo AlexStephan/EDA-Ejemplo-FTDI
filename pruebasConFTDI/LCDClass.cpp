@@ -2,7 +2,7 @@
 
 using namespace std;
 
-LCD::LCD(int iDevice = 5) 
+LCD::LCD(int iDevice) 
 {
 	FT_STATUS status = !FT_OK;
 	BYTE info = 0x00;
