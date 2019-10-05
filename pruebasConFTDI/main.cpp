@@ -171,16 +171,20 @@ FT_HANDLE* lcdInit(int iDevice) {
 				Sleep(1);
 				lcdWriteNibble(result, send | LCD_E_OFF);
 				Sleep(5);
+				cout << "A" << endl;
 
 				lcdWriteNibble(result, send | LCD_E_ON);
 				Sleep(1);
 				lcdWriteNibble(result, send | LCD_E_OFF);
 				Sleep(1);
+				cout << "B" << endl;
+
 
 				lcdWriteNibble(result, send | LCD_E_ON);
 				Sleep(1);
 				lcdWriteNibble(result, send | LCD_E_OFF);
 				Sleep(1);
+				cout << "C" << endl;
 
 				send = LCD_FUNCTION_SET | LCD_FUN_DATALENGHT_4 | LCD_RS_IR;
 				lcdWriteNibble(result, send | LCD_E_OFF);
@@ -188,15 +192,20 @@ FT_HANDLE* lcdInit(int iDevice) {
 				Sleep(1);
 				lcdWriteNibble(result, send | LCD_E_OFF);
 				Sleep(1);
+				cout << "D" << endl;
 
 				lcdWriteIR(result, LCD_FUNCTION_SET | LCD_FUN_DATALENGHT_4 | LCD_FUN_LINES_2 | LCD_FUN_FONT_5x8);
 				Sleep(1);
+				cout << "E" << endl;
 				lcdWriteIR(result, LCD_CONTROL | LCD_CTRL_DISPLAY_OFF | LCD_CTRL_CURSOR_OFF | LCD_CTRL_BLINK_OFF);
 				Sleep(1);
+				cout << "F" << endl;
 				lcdWriteIR(result, LCD_CLEAR);
 				Sleep(10);
+				cout << "G" << endl;
 				lcdWriteIR(result, LCD_ENTRYSET_RIGHT);
 				Sleep(1);
+				cout << "H" << endl;
 
 				cout << "SET" << endl;
 			}
