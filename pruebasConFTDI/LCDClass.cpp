@@ -4,7 +4,7 @@ using namespace std;
 
 LCD::LCD(int iDevice) 
 {
-	FT_STATUS status = !FT_OK;
+	lcdStatus = !FT_OK;
 	BYTE info = 0x00;
 	DWORD sizeSent = 0;
 
@@ -18,10 +18,10 @@ LCD::LCD(int iDevice)
 
 	bool exit = false;
 
-	while (status != FT_OK && ((current - start) < MaxTime) && exit == false) 
+	while (lcdStatus != FT_OK && ((current - start) < MaxTime) && exit == false)
 	{
-		status = FT_OpenEx((void*)LCDdescription, FT_OPEN_BY_DESCRIPTION, &lcdHandler);
-		if (status == FT_OK) {
+		lcdStatus = FT_OpenEx((void*)LCDdescription, FT_OPEN_BY_DESCRIPTION, &lcdHandler);
+		if (lcdStatus == FT_OK) {
 			BYTE Mask = 0xFF;
 			BYTE Mode = 1;
 			if (FT_SetBitMode(lcdHandler, Mask, Mode) == FT_OK) 
@@ -91,7 +91,7 @@ LCD::LCD(int iDevice)
 		current = std::chrono::system_clock::now();
 	}
 	//controlar si se logro conectar O se acabo el tiempo
-	if (status != FT_OK) {
+	if (lcdStatus != FT_OK) {
 		cout << "Couldn't open" << endl;
 		//No se pudo abrir el LCD
 		lcdHandler = NULL;
@@ -137,4 +137,8 @@ void LCD::lcdWriteDR(BYTE valor)
 FT_HANDLE LCD::getHandler(void)
 {
 	return lcdHandler;
+}
+
+FT_STATUS LCD::getStatus(void) {
+	return lcdStatus;
 }

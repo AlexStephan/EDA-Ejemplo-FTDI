@@ -111,11 +111,13 @@ public:
 	void lcdWriteIR(BYTE valor);
 	void lcdWriteDR(BYTE valor);
 	FT_HANDLE getHandler(void);
+	FT_STATUS getStatus(void);
 
 private:
 	void lcdWriteByte(BYTE valor, BYTE rs);	//Separa una instruccion/dato en 2 nybbles, y a cada uno le anexa los valores de E y RS adecuados, formando 2 bytes
 	void lcdWriteNibble(BYTE valor); //Envia el byte directamente por el FTDI al LCD (segun los pines asignados a cada bit)
 
 	FT_HANDLE lcdHandler;
+	FT_STATUS lcdStatus;
 
 };
