@@ -82,12 +82,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HitachiLCD.cpp" />
     <ClCompile Include="LCDClass.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basicLCD.h" />
     <ClInclude Include="ftd2xx.h" />
+    <ClInclude Include="HitachiLCD.h" />
     <ClInclude Include="LCDClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

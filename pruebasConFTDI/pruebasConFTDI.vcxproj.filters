@@ -21,6 +21,9 @@
     <ClCompile Include="LCDClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HitachiLCD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ftd2xx.h">
@@ -30,6 +33,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="basicLCD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HitachiLCD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
