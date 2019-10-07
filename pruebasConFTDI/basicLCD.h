@@ -1,4 +1,4 @@
-#include "LCDClass.h"
+#include "ftd2xx.h"
 
 struct cursorPosition { 
 	int row; int column; 
