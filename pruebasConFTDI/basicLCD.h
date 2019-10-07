@@ -3,39 +3,39 @@
 struct cursorPosition { 
 	int row; int column; 
 };
-class basicLCD 
+class basicLCD
 {
 public:
 
-	/*===================================================== 
-	* Name: basicLCD 
-	* Entra: -               
-	* Resulta: Constructor de la clase. Inicializa el LCD y deja 
-	*          todo listo comenzar a utilizarlo. 
-	*           
-	* cadd =1 (cursor address) (ver NOTA 1) 
+	/*=====================================================
+	* Name: basicLCD
+	* Entra: -
+	* Resulta: Constructor de la clase. Inicializa el LCD y deja
+	*          todo listo comenzar a utilizarlo.
+	*
+	* cadd =1 (cursor address) (ver NOTA 1)
 	*=====================================================*/
 	basicLCD();
 
-	/*===================================================== 
-	* Name: ~basicLCD 
-	* Entra: -               
-	* Resulta: Destructor de la clase. Libera cualquier recurso 
+	/*=====================================================
+	* Name: ~basicLCD
+	* Entra: -
+	* Resulta: Destructor de la clase. Libera cualquier recurso
 	*          que se hubiera tomado de forma de evitar
-	*          "resources leak".  
+	*          "resources leak".
 	*=====================================================*/
 	~basicLCD();
 
-	/*===================================================== 
-	* Name: lcdInitOk * Entra: -               
-	* Resulta: No genera ningún cambio en el display. 
-	* Devuelve en su nombre “true” si el display se inicializó 
-	* correctamente (el constructor no tuvo errores) o “false 
-	* en caso contrario. 
+	/*=====================================================
+	* Name: lcdInitOk * Entra: -
+	* Resulta: No genera ningún cambio en el display.
+	* Devuelve en su nombre “true” si el display se inicializó
+	* correctamente (el constructor no tuvo errores) o “false
+	* en caso contrario.
 	*=====================================================*/
-	
+
 	//miren el documento en campus, re pesado copiar todo del PDF:D
-	
+
 	virtual bool lcdInitOk() = 0;
 
 	virtual FT_STATUS lcdGetError() = 0;
@@ -65,3 +65,5 @@ protected:
 	int cadd;
 
 	void lcdUpdateCursor();
+
+};
