@@ -108,6 +108,7 @@ class LCD
 {
 public:
 	LCD(int iDevice = 5);
+	~LCD();
 	void lcdWriteIR(BYTE valor);
 	void lcdWriteDR(BYTE valor);
 	FT_HANDLE getHandler(void);

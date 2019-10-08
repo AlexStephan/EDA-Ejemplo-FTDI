@@ -83,8 +83,8 @@ LCD::LCD(int iDevice) : lcdHandler(nullptr)
 			else {
 				// No se pudo configurar :(
 				FT_Close(lcdHandler);
-				cout << "Couldn't configure" << endl;
 				lcdHandler = NULL;
+				cout << "Couldn't configure" << endl;
 			}
 			exit = true;
 		}
@@ -95,6 +95,13 @@ LCD::LCD(int iDevice) : lcdHandler(nullptr)
 		cout << "Couldn't open" << endl;
 		//No se pudo abrir el LCD
 		lcdHandler = NULL;
+	}
+}
+
+LCD::~LCD()
+{
+	if (lcdHandler != nullptr) {
+		FT_Close(lcdHandler);
 	}
 }
 

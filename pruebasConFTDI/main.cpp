@@ -2,9 +2,9 @@
 	DUDAS A RESOLVER:
 
 	con S (Accompanies display shift) = 1 en la instruccion Entry mode set:
-	-avanza de la 0F a la 10 o a la 40?
-	-avanza de la 4F a la 00 o a la 50?
-	-en caso de ser la seguna, shiftea el display?
+//	-avanza de la 0F a la 10 o a la 40?
+//	-avanza de la 4F a la 00 o a la 50?
+//	-en caso de ser la seguna, shiftea el display?
 
 	con S = 0:
 	-avanza de la 0F a la 40 o a la 00? (simil 4F a 00 o 40)

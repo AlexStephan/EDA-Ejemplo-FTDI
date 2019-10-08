@@ -62,6 +62,6 @@ protected:
 
 	int cadd;
 
-	void lcdUpdateCursor();
+//	void lcdUpdateCursor();
 
 };
