@@ -133,3 +133,33 @@ bool HitachiLCD::validatePosition(const cursorPosition pos)
 	}
 	return true;
 }
+
+basicLCD& HitachiLCD::operator<<(const unsigned char c)
+{
+	lcd.lcdWriteDR(c);
+	Sleep(1);
+
+	//analizo por separado el caso cadd = 16 o cadd = 32.
+	//evito realizar un Set DDRAM en cualquier otro caso, con lo
+	//cual acelero la ejecucion del codigo, en especial cuando
+	//se envia una cadena de caracteres
+	cadd++;
+	if (cadd > 32)
+		cadd = 1;
+
+	if ((cadd % 16) == 1) //"si empezo una nueva linea"
+		caddToLCD();
+
+	return *this;
+	// TODO: insert return statement here
+}
+
+basicLCD& HitachiLCD::operator<<(const unsigned char* arr)
+{
+	unsigned char c;
+	while ((c = arr[0]) != '\0') {
+		(*this) << c;
+		arr++;
+	}
+	return *this;
+}

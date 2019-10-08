@@ -19,6 +19,9 @@ public:
 
 	bool lcdSetCursorPosition(const cursorPosition pos);
 	cursorPosition lcdGetCursorPosition();
+	basicLCD& operator<<(const unsigned char c);
+	basicLCD& operator<<(const unsigned char* c);
+
 
 private:
 	LCD lcd;
