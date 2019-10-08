@@ -163,3 +163,13 @@ basicLCD& HitachiLCD::operator<<(const unsigned char* arr)
 	}
 	return *this;
 }
+
+basicLCD& HitachiLCD::operator<<(const char* arr)
+{
+	char c;
+	while ((c = arr[0]) != '\0') {
+		(*this) << c;
+		arr++;
+	}
+	return *this;
+}

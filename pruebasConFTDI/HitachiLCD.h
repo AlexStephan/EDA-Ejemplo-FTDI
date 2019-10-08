@@ -21,6 +21,7 @@ public:
 	cursorPosition lcdGetCursorPosition();
 	basicLCD& operator<<(const unsigned char c);
 	basicLCD& operator<<(const unsigned char* c);
+	basicLCD& operator<<(const char* c);
 
 
 private:
