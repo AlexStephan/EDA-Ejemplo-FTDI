@@ -15,7 +15,6 @@ public:
 	*
 	* cadd =1 (cursor address) (ver NOTA 1)
 	*=====================================================*/
-	basicLCD();
 
 	/*=====================================================
 	* Name: ~basicLCD
@@ -24,7 +23,6 @@ public:
 	*          que se hubiera tomado de forma de evitar
 	*          "resources leak".
 	*=====================================================*/
-	~basicLCD();
 
 	/*=====================================================
 	* Name: lcdInitOk * Entra: -

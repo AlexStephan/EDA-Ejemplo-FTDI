@@ -2,7 +2,7 @@
 
 using namespace std;
 
-LCD::LCD(int iDevice) 
+LCD::LCD(int iDevice) : lcdHandler(nullptr)
 {
 	lcdStatus = !FT_OK;
 	BYTE info = 0x00;
