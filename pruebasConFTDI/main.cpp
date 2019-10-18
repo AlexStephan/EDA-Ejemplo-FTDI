@@ -28,10 +28,12 @@
 
 
 #include "HitachiLCD.h"
+#include "Gui.h"
 
 using namespace std;
 
 void loop(HitachiLCD lcd);
+void launchGui();
 
 int main(void)
 {
@@ -50,6 +52,53 @@ int main(void)
 	else {
 		cout << "Que sad... :(" << endl;
 	}
+	launchGui();
+}
+
+void launchGui() {
+	Gui testi;
+
+	bool running = true;
+	while (running)
+	{
+		ALLEGRO_EVENT ev;
+		while (al_get_next_event(testi.getEventQueue(), &ev))
+		{
+			ImGui_ImplAllegro5_ProcessEvent(&ev);
+			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+				running = false;
+			}
+			if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE)
+			{
+				ImGui_ImplAllegro5_InvalidateDeviceObjects();
+				al_acknowledge_resize(testi.getDisplay());
+				ImGui_ImplAllegro5_CreateDeviceObjects();
+			}
+		}
+
+		//Start Dear ImGui frame
+		ImGui_ImplAllegro5_NewFrame();
+		ImGui::NewFrame();
+
+		//Pide input del ususario
+		if (testi.getUserFlag()) {
+			if (!testi.askUsername() && !testi.getUserFlag()) {
+				break;
+			}
+		}
+
+		/*(for some reason this loop does not happen, need to fix)
+		//Username recibido, dibuja UI
+		if (!testi.getUserFlag()) {
+			testi.drawController();
+		}
+		*/
+		testi.drawController();
+
+		// Rendering
+		testi.show();
+}
+
 }
 
 #if LCD_MODE == ONE_SENTENCE
@@ -120,6 +169,8 @@ void loop(HitachiLCD lcd) {
 	}
 }
 
+
 #else
 	//Missing//
+
 #endif
