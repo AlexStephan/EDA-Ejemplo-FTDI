@@ -10,7 +10,7 @@ namespace statusType {
 		LOADING,	//Cargando twits de un usuario (getUser DEBE SER FUNCIONAL)
 		FINISHED_LOADING,	//Terminaron de cargarse los Twits. Aun no se selecciono ninguno. (getNumberOfTweets DEBE SER FUNCIONAL)
 		STOPPED_LOADING,	//El usuario cancelo la carga de Tweets (getNumberOfTweets DEBE SER FUNCIONAL)
-		SHOW_TWEET,	//Mostrar el Tweet en el display (getUser, getTuit, getDate, getSpeed, getNumberOfTweets y getCurrentTweetNumber deben ser funcionales)
+		SHOW_TWEET,	//Mostrar el Tweet en el display (getUser,getTuit, getDate, getSpeed, getNumberOfTweets y getCurrentTweetNumber deben ser funcionales)
 		GOODBYE	//Ultimo mensaje antes de apagar el LCD. IDEA: una vez q el ciclo principal del main (controller y viewer.step()) haya acabado, mantener en loop al LCD hasta q el mismo haya finalizado)
 	};
 }

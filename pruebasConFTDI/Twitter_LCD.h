@@ -3,10 +3,11 @@
 #include "MVC_observer.h"
 #include "basicLCD.h"
 #include "Twitter_Model.h"
+#include <string>
 
-#define MAX_USER_LENGHT	50
-#define MAX_TWEET_LENGH	300
-#define MAX_DATE_LENGHT	50
+//#define MAX_USER_LENGHT	50
+//#define MAX_TWEET_LENGH	300
+//#define MAX_DATE_LENGHT	50
 
 
 /*
@@ -44,12 +45,12 @@ private:
 
 	bool newChanges;
 
-	char user[MAX_USER_LENGHT + 1];
-	char tweet[MAX_TWEET_LENGH + 1];
-	char date[MAX_DATE_LENGHT + 1];
+	std::string user;//[MAX_USER_LENGHT + 1];
+	std::string tweet;//[MAX_TWEET_LENGH + 1];
+	std::string date;//[MAX_DATE_LENGHT + 1];
 	double speed;
-	errorType::errorVar error;
-	statusType::statusVar status;
+	errorType::errorVar error;			//
+	statusType::statusVar status;		//
 	unsigned int numberOfTweets;
 	unsigned int currentTweetNumber;
 };
