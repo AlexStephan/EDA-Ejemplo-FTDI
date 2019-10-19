@@ -23,7 +23,7 @@
 
 #define ONE_SENTENCE 1
 #define CURSOR_MOVE	2
-#define LCD_MODE CURSOR_MOVE
+#define LCD_MODE ONE_SENTENCE
 
 
 
@@ -37,6 +37,7 @@ void launchGui();
 
 int main(void)
 {
+	/*
 	HitachiLCD lcd(5);
 	if (lcd.lcdInitOk() == true) {
 
@@ -52,6 +53,7 @@ int main(void)
 	else {
 		cout << "Que sad... :(" << endl;
 	}
+	*/
 	launchGui();
 }
 
