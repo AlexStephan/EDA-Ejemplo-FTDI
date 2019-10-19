@@ -89,14 +89,6 @@ void launchGui() {
 			}
 		}
 
-		/*(for some reason this loop does not happen, need to fix)
-		//Username recibido, dibuja UI
-		if (!testi.getUserFlag()) {
-			testi.drawController();
-		}
-		*/
-		testi.drawController();
-
 		// Rendering
 		testi.show();
 }

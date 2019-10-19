@@ -1,4 +1,4 @@
-#pragma once
+#pragma 
 #include <stdint.h>
 #include <string>
 
@@ -9,6 +9,8 @@
 #include "imgui_impl_allegro5.h"
 
 #define MAX_UNAME 16
+#define MAX_VEL 10
+#define DEFAULT_CANT 10		//??
 
 class Gui {
 
@@ -36,6 +38,8 @@ private:
 	int vel;					//velocidad
 
 	bool userFound;
-	int showCtrlWindow;
-
+	int cant;					//cantidad te tuits para mostrar
+	int show_download_window;
+	int downloadDone;
+	int tweetsAvailable;
 };

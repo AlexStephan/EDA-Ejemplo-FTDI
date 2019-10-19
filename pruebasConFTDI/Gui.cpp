@@ -40,8 +40,10 @@ Gui::Gui() {
 	cursor = ImVec2(0, 0);
 	askUser = true;
 	vel = 5;
+	cant = 0;
 	userFound = false;
-	showCtrlWindow = 0;
+	show_download_window = 0;
+	downloadDone = 0;
 }
 
 Gui::~Gui() {
@@ -73,17 +75,30 @@ bool Gui::askUsername() {
 	bool r = false;
 	ImGui::Begin("Tweet LCD ", &askUser);
 
-	ImGui::Text("Ingrese el nombre de usuario del que desea obtener los tuits");
+	ImGui::Text("Por favor, ingrese el nombre de usuario del que desea \nobtener los tuits y la cantidad de tuits a bajar.");
 	ImGui::NewLine();
 	ImGui::InputText("Usuario de Twitter", username, MAX_UNAME);
 	ImGui::NewLine();
+	ImGui::InputInt("Cantidad de tuits", &cant); //falta chequear si el numero es positivo
+	ImGui::Text("Si no elige una cantidad, se usara el default de Twitter");
+	ImGui::NewLine();
 
 	if (ImGui::Button("Submit")) {
+		//si el usuario no ingresó cantidad o ingresó cantidad negativo
+		if (cant <= 0) {
+			cant = DEFAULT_CANT;
+		}
+
 		/* TODO:
 		 * llama a Model
 		 * recieve information if user was found
 		 */
-		userFound = true;
+
+		 //userFound = true;
+
+		//if todo bien
+		show_download_window = true;
+
 		if (userFound) {
 			askUser = false;
 			/* TODO:
@@ -97,14 +112,35 @@ bool Gui::askUsername() {
 			cout << "not ok" << endl;
 		}
 	}
-
 	ImGui::End();
+
+	if (show_download_window) {
+		ImGui::Begin("Output");
+		ImGui::Text("Cargando tuits...");
+		if (ImGui::Button("Stop")) {
+
+			//TODO: stop descarga
+
+			//TODO: get amount of downloaded tweets
+			tweetsAvailable = 20;
+			downloadDone = 1;
+		}
+		ImGui::End();
+	}
+
+	if (downloadDone) {
+		show_download_window = 0;
+		drawController();
+
+	}
+
 	return r;
 }
 
 void Gui::drawController() {
 
 	ImGui::Begin("LCD Controller");
+	ImGui::Text("Desgargado %d tuits", tweetsAvailable);
 	ImGui::Text("Mostrando tuits del usuario @%s", username);
 	ImGui::NewLine();
 	ImGui::Text("Opciones:");
@@ -129,24 +165,12 @@ void Gui::drawController() {
 
 	ImGui::NewLine();
 	ImGui::Text("Velocidad: %d", vel);
-
+	ImGui::SliderInt("Velocidad", &vel, 0, MAX_VEL);
 	ImGui::NewLine();
-	if (ImGui::Button("Disminuir")) {
-		//...
-		vel--;
-		cout << "disminuyendo. velocidad: " << vel << endl;
-	}
-
-	ImGui::SameLine();
-	if (ImGui::Button("Aumentar")) {
-		//...
-		vel++;
-		cout << "aumentando. velocidad: " << vel << endl;
-	}
 
 	ImGui::NewLine();
 	if (ImGui::Button("Salir")) {
-		//salir
+		//TODO: salir
 	}
 
 	ImGui::End();
