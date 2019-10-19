@@ -2,6 +2,18 @@
 
 Twitter_LCD_Hitachi::Twitter_LCD_Hitachi()
 	: Twitter_LCD(),
+
+	phraseToScroll(),
+	sizeofPhrase(0),
+	scrollPhase(false),
+	beginningOfPhrase(false),
+	timeBetweenScrolls(),
+	lastScroll(),
+
+	currentLoadSymbol(0),
+	loadSymbolTime(),
+
+
 	formattedTweet()
 {
 }
@@ -14,6 +26,7 @@ void Twitter_LCD_Hitachi::step(void)
 {
 	if (newChanges == true) {
 		newChanges = false;
+		string message = "";
 		switch (status) {
 		case statusType::WELCOME:
 			cursorPosition start;
@@ -26,12 +39,12 @@ void Twitter_LCD_Hitachi::step(void)
 			(*lcd).lcdClear();
 			break;
 		case statusType::FINISHED_LOADING:
-			std::string message = "FINISHED LOADINGTweets: ";
+			message += "FINISHED LOADINGTweets: ";
 			message += std::to_string(numberOfTweets);
 			(*lcd) << (unsigned const char*)message.c_str();
 			break;
 		case statusType::STOPPED_LOADING:
-			std::string message = "STOPPED LOADING Tweets: ";
+			message += "STOPPED LOADING Tweets: ";
 			message += std::to_string(numberOfTweets);
 			(*lcd) << (unsigned const char*)message.c_str();
 			break;
