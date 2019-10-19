@@ -100,6 +100,7 @@
     <ClCompile Include="LCDClass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MVC_subject.cpp" />
+    <ClCompile Include="Twitter_LCD.cpp" />
     <ClCompile Include="Twitter_Model.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +119,7 @@
     <ClInclude Include="LCDClass.h" />
     <ClInclude Include="MVC_observer.h" />
     <ClInclude Include="MVC_subject.h" />
+    <ClInclude Include="Twitter_LCD.h" />
     <ClInclude Include="Twitter_Model.h" />
   </ItemGroup>
   <ItemGroup>

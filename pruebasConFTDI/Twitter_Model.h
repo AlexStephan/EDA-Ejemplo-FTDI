@@ -1,11 +1,18 @@
 #pragma once
 #include "MVC_subject.h"
 
-namespace errorType {
+namespace errorType { //Ante un error, se ignora el contenido de Status
 	enum errorVar{NO_ERROR,CANT_CONNECT,NO_TWEETS_AVAILABLE,NON_EXISTENT_USER};
 }
 namespace statusType {
-	enum statusVar{LOADING,READY,SHUT_DOWN};
+	enum statusVar{
+		WELCOME,	//Al iniciar el modelo
+		LOADING,	//Cargando twits de un usuario (getUser DEBE SER FUNCIONAL)
+		FINISHED_LOADING,	//Terminaron de cargarse los Twits. Aun no se selecciono ninguno. (getNumberOfTweets DEBE SER FUNCIONAL)
+		STOPPED_LOADING,	//El usuario cancelo la carga de Tweets (getNumberOfTweets DEBE SER FUNCIONAL)
+		SHOW_TWEET,	//Mostrar el Tweet en el display (getUser, getTuit, getDate, getSpeed, getNumberOfTweets y getCurrentTweetNumber deben ser funcionales)
+		GOODBYE	//Ultimo mensaje antes de apagar el LCD. IDEA: una vez q el ciclo principal del main (controller y viewer.step()) haya acabado, mantener en loop al LCD hasta q el mismo haya finalizado)
+	};
 }
 
 class Twitter_Model :
