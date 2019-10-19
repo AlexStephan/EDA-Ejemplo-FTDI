@@ -99,6 +99,7 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="LCDClass.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MVC_subject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="basicLCD.h" />
@@ -114,6 +115,8 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="LCDClass.h" />
+    <ClInclude Include="MVC_observer.h" />
+    <ClInclude Include="MVC_subject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
