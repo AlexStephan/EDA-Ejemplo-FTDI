@@ -24,6 +24,7 @@ para el manejo de cada LCD (en particular, STEP)
 class Twitter_LCD : 
 	public MVC_observer
 {
+public:
 	Twitter_LCD();
 	~Twitter_LCD();
 
@@ -39,7 +40,7 @@ class Twitter_LCD :
 	virtual void step(void) = 0; //Metodo llamado desde el Main, para actualizar el display, aun mientras el Modelo no haya sido modificado (colocar junto al cycle del controller, en el loop)
 	// Actualiza el display
 
-private:
+protected:
 	basicLCD *lcd;
 	bool lcdReadyToUse;
 
