@@ -59,7 +59,7 @@ private:
 	unsigned int currentTweetNumber;
 
 	//Tweet Downloading
-	json tweets;
+	nlohmann::json tweets;
 	std::string tweetsString;
 	CURL* curl;
 

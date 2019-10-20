@@ -36,7 +36,7 @@ void Twitter_Model::getBearerToken()
 	}
 	tokenJson = json::parse(token);
 	token = tokenJson["access_token"];
-
+	this->notifyAllObservers();
 }
 
 void Twitter_Model::downloadTweets(void)
@@ -84,6 +84,8 @@ void Twitter_Model::downloadTweets(void)
 			error = NO_TWEETS_AVAILABLE;
 		}
 	}
+
+	this->notifyAllObservers();
 }
 
 
