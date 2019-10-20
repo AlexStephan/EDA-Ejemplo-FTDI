@@ -35,20 +35,17 @@ LCD::LCD(int iDevice) : lcdHandler(nullptr)
 				Sleep(1);
 				lcdWriteNibble(send | LCD_E_OFF);
 				Sleep(5);
-				cout << "A" << endl;
 
 				lcdWriteNibble(send | LCD_E_ON);
 				Sleep(1);
 				lcdWriteNibble(send | LCD_E_OFF);
 				Sleep(1);
-				cout << "B" << endl;
 
 
 				lcdWriteNibble(send | LCD_E_ON);
 				Sleep(1);
 				lcdWriteNibble(send | LCD_E_OFF);
 				Sleep(1);
-				cout << "C" << endl;
 
 				send = LCD_FUNCTION_SET | LCD_FUN_DATALENGHT_4 | LCD_RS_IR;
 				lcdWriteNibble(send | LCD_E_OFF);
@@ -56,27 +53,21 @@ LCD::LCD(int iDevice) : lcdHandler(nullptr)
 				Sleep(1);
 				lcdWriteNibble(send | LCD_E_OFF);
 				Sleep(1);
-				cout << "D" << endl;
 
 				lcdWriteIR(LCD_FUNCTION_SET | LCD_FUN_DATALENGHT_4 | LCD_FUN_LINES_2 | LCD_FUN_FONT_5x8);
 				Sleep(1);
-				cout << "E" << endl;
 				lcdWriteIR(LCD_CONTROL | LCD_CTRL_DISPLAY_OFF | LCD_CTRL_CURSOR_OFF | LCD_CTRL_BLINK_OFF);
 				Sleep(1);
-				cout << "F" << endl;
 				lcdWriteIR(LCD_CLEAR);
 				Sleep(10);
-				cout << "G" << endl;
 				lcdWriteIR(LCD_ENTRYSET_RIGHT);
 				Sleep(1);
-				cout << "H" << endl;
 
 				//
 				lcdWriteIR(LCD_CONTROL | LCD_CTRL_DISPLAY_ON | LCD_CTRL_CURSOR_OFF | LCD_CTRL_BLINK_OFF);
 				Sleep(1);
 				//
 
-				cout << "SET" << endl;
 			}
 			else {
 				// No se pudo configurar :(
@@ -109,7 +100,7 @@ void LCD::lcdWriteNibble(BYTE valor)
 	FT_Write(lcdHandler, &valor, 1, &size_sent);
 
 	//Debug:
-	printf("0x%02X\n", valor);
+	//printf("0x%02X\n", valor);
 }
 
 void LCD::lcdWriteByte(BYTE valor, BYTE rs)

@@ -57,6 +57,7 @@ int not_main_anymore(void)
 	}
 	*/
 	launchGui();
+	return 0;
 }
 
 void launchGui() {

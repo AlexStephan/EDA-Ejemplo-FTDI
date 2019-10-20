@@ -126,6 +126,7 @@
     <ClInclude Include="Twitter_LCD.h" />
     <ClInclude Include="Twitter_LCD_Hitachi.h" />
     <ClInclude Include="Twitter_Model.h" />
+    <ClInclude Include="Twitter_Model_TestForViewer_justForAlexXD.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

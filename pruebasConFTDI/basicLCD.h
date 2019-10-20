@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Windows.h>
 #define FTD2XX_EXPORTS
 #include "ftd2xx.h"

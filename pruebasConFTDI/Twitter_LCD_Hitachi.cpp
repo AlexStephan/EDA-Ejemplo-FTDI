@@ -3,7 +3,7 @@
 #define BLANK_LINE "                " //Es mas rapido para el programa escribir espacios al final del mensaje, en vez de tener que limpiar por completo la linea y escribir lo correspondiente
 										//Notese q lo q hace el programa para borrar una sola linea es, de hecho, escribir espacios
 
-#define LOADING_SIMBOL_INTERVAL 4 //mseg
+#define LOADING_SIMBOL_INTERVAL 200 //mseg
 #define LOADING_NAME_SPEED 3
 #define TIME_BEFORE_DATE 2000 //mseg
 
@@ -110,9 +110,9 @@ void Twitter_LCD_Hitachi::control_NewChanges(void)
 
 void Twitter_LCD_Hitachi::control_NoChanges(void)
 {
+	static const char LOADING_ARRAY[] = "|{(<({|})>)}";
 	switch (status) {
 	case statusType::LOADING:
-		static const char LOADING_ARRAY[] = "|{(<({|})>)}";
 
 		//actualiza simbolo de carga
 		if (system_clock::now() >= (loadSymbolTime + interval(LOADING_SIMBOL_INTERVAL))) {
