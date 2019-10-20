@@ -30,7 +30,7 @@
 
 
 #include "HitachiLCD.h"
-#include "Gui.h"
+#include "Twitter_Controller.h"
 
 using namespace std;
 
@@ -61,7 +61,7 @@ int not_main_anymore(void)
 }
 
 void launchGui() {
-	Gui testi;
+	Twitter_Controller testi;
 
 	bool running = true;
 	while (running)

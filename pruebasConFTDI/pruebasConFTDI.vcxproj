@@ -93,7 +93,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Gui.cpp" />
     <ClCompile Include="HitachiLCD.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -112,7 +111,6 @@
   <ItemGroup>
     <ClInclude Include="basicLCD.h" />
     <ClInclude Include="ftd2xx.h" />
-    <ClInclude Include="Gui.h" />
     <ClInclude Include="HitachiLCD.h" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imconfig_allegro5.h" />
