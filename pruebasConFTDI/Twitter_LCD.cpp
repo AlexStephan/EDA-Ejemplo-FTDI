@@ -65,9 +65,9 @@ void Twitter_LCD::update(void* model)
 			//No se necesita mas informacion
 			break;
 		case statusType::LOADING:
-			const char* c;
-			if ((c = Tmodel->getUser()) != nullptr)
-				user = c;
+			const char* l;
+			if ((l = Tmodel->getUser()) != nullptr)
+				user = l;
 			break;
 		case statusType::FINISHED_LOADING:
 		case statusType::STOPPED_LOADING:

@@ -54,6 +54,12 @@
     <ClCompile Include="Twitter_LCD_Hitachi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tp9main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Twitter_Controller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ftd2xx.h">
@@ -108,6 +114,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Twitter_LCD_Hitachi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Twitter_Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,3 +1,5 @@
+//NOTA: este archivo quedara obsoleto (en su lugar, emplear tp9main.cpp) y se empleara solo para pruebas
+
 /*
 	DUDAS A RESOLVER:
 
@@ -35,7 +37,7 @@ using namespace std;
 void loop(HitachiLCD lcd);
 void launchGui();
 
-int main(void)
+int not_main_anymore(void)
 {
 	/*
 	HitachiLCD lcd(5);
