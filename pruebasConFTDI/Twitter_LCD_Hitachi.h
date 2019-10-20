@@ -45,5 +45,7 @@ private:
 	//llamar con set_scrollingPhrase conteniendo el "mensaje crudo" (sin espacios adicionales al final)
 	void set_scrollingPhrase(double setspeed, unsigned int line);
 	void manage_scrollingPhrase(unsigned int line);
+
+	void create_formattedDate(void);
 };
 

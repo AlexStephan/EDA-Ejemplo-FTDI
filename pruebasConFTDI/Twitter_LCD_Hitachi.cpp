@@ -3,9 +3,9 @@
 #define BLANK_LINE "                " //Es mas rapido para el programa escribir espacios al final del mensaje, en vez de tener que limpiar por completo la linea y escribir lo correspondiente
 										//Notese q lo q hace el programa para borrar una sola linea es, de hecho, escribir espacios
 
-static const char LoadingArray[] = "|{(<({|})>)}";
 #define LOADING_SIMBOL_INTERVAL 4 //mseg
 #define LOADING_NAME_SPEED 3
+#define TIME_BEFORE_DATE 2000 //mseg
 
 using namespace std;
 using namespace std::chrono;
@@ -84,6 +84,26 @@ void Twitter_LCD_Hitachi::control_NewChanges(void)
 		currentLoadSymbol = 0;
 		loadSymbolTime = system_clock::now();
 		break;
+	case statusType::SHOW_TWEET:
+		formattedCurrent = "Tweet ";
+		formattedCurrent += to_string(currentTweetNumber);
+		formattedCurrent += '/';
+		formattedCurrent += to_string(numberOfTweets);
+
+		phraseToScroll = user;
+		phraseToScroll += ": \"";
+		phraseToScroll += tweet;
+		phraseToScroll += "\"";
+
+		create_formattedDate();
+
+		alreadySeeingDate = false;
+		tweetStartTime = system_clock::now();
+
+		(*lcd) << (unsigned char*)formattedCurrent.c_str();
+		set_scrollingPhrase(speed, 1);
+
+		break;
 
 	}
 }
@@ -92,20 +112,38 @@ void Twitter_LCD_Hitachi::control_NoChanges(void)
 {
 	switch (status) {
 	case statusType::LOADING:
+		static const char LOADING_ARRAY[] = "|{(<({|})>)}";
+
 		//actualiza simbolo de carga
 		if (system_clock::now() >= (loadSymbolTime + interval(LOADING_SIMBOL_INTERVAL))) {
 			loadSymbolTime = system_clock::now();
 			currentLoadSymbol++;
-			currentLoadSymbol %= sizeof(LoadingArray) - 1;
+			currentLoadSymbol %= sizeof(LOADING_ARRAY) - 1;
 
 			cursorPosition lastChar;
 			lastChar.row = 1;
 			lastChar.column = 15;
 			lcd->lcdSetCursorPosition(lastChar);
-			(*lcd) << (unsigned char)LoadingArray[currentLoadSymbol];
+			(*lcd) << (unsigned char)LOADING_ARRAY[currentLoadSymbol];
 		}
 
 		manage_scrollingPhrase(0);
+
+		break;
+
+	case statusType::SHOW_TWEET:
+		if ((alreadySeeingDate == false) && (system_clock::now() >= tweetStartTime + interval(TIME_BEFORE_DATE))) {
+			alreadySeeingDate = true;
+
+			cursorPosition start;
+			start.column = 0;
+			start.row = 0;
+			lcd->lcdSetCursorPosition(start);
+
+			(*lcd) << (unsigned char*)formattedDate.c_str();
+		}
+
+		manage_scrollingPhrase(1);
 
 		break;
 
@@ -198,4 +236,45 @@ void Twitter_LCD_Hitachi::manage_scrollingPhrase(unsigned int line)
 		}
 	}
 	*/
+}
+
+void Twitter_LCD_Hitachi::create_formattedDate(void)
+{
+	const char MONTH_ABR[12][4]{
+		"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+	};
+
+	string day = "01";
+	string month = "01";
+	string year = "00";
+
+	string hour = "00";
+	string minute = "00";
+
+	if (date.size() == 30) {
+		day = date.substr(8, 2);
+		year = date.substr(28, 2);
+		hour = date.substr(11, 2);
+		minute = date.substr(14, 2);
+
+		string aux = date.substr(4, 3);
+		bool found = false;
+		int i;
+		for (i = 0; i < 12; i++) {
+			if (aux.compare(MONTH_ABR[i]) == 0) {
+				found = true;
+				break;
+			}
+		}
+		if (found == true) {
+			month.clear();
+			if (i < 10)
+				month += '0';
+			month += to_string(i);
+		}
+
+	}
+
+	formattedDate = day + '/' + month + '/' + year + " - "
+		+ hour + ':' + minute;
 }
