@@ -116,12 +116,12 @@ double Twitter_Model::getSpeed()
 	return speed;
 }
 
-errorType Twitter_Model::getError() 
+errorType::errorVar Twitter_Model::getError() 
 {
 	return error;
 }
 
-statusType Twitter_Model::getStatus()
+statusType::statusVar Twitter_Model::getStatus()
 { 
 	return status; 
 }

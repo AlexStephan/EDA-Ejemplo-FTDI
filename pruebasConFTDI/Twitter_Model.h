@@ -12,16 +12,20 @@ class testingViewerThroughModel;
 //
 
 
+namespace errorType { //Ante un error, se ignora el contenido de Status
+	enum errorVar { NONE, CANT_CONNECT, NO_TWEETS_AVAILABLE, NON_EXISTENT_USER };
+}
 
-typedef enum {NONE,CANT_CONNECT,NO_TWEETS_AVAILABLE,NON_EXISTENT_USER}errorType;
-typedef enum {
+namespace statusType {
+	enum statusVar {
 		WELCOME,	//Al iniciar el modelo
 		LOADING,	//Cargando twits de un usuario (getUser DEBE SER FUNCIONAL)
 		FINISHED_LOADING,	//Terminaron de cargarse los Twits. Aun no se selecciono ninguno. (getNumberOfTweets DEBE SER FUNCIONAL)
 		STOPPED_LOADING,	//El usuario cancelo la carga de Tweets (getNumberOfTweets DEBE SER FUNCIONAL)
 		SHOW_TWEET,	//Mostrar el Tweet en el display (getUser,getTuit, getDate, getSpeed, getNumberOfTweets y getCurrentTweetNumber deben ser funcionales)
 		GOODBYE	//Ultimo mensaje antes de apagar el LCD. IDEA: una vez q el ciclo principal del main (controller y viewer.step()) haya acabado, mantener en loop al LCD hasta q el mismo haya finalizado)
-}statusType;
+	}
+};
 
 class Twitter_Model :
 	public MVC_subject
@@ -36,8 +40,8 @@ public:
 	const char* getTuit();
 	const char* getDate(); 
 	double getSpeed();
-	errorType getError();
-	statusType getStatus();
+	errorType::errorVar getError();
+	statusType::statusVar getStatus();
 	unsigned int getNumberOfTweets();
 	unsigned int getCurrentTweetNumber();
 
@@ -53,8 +57,8 @@ private:
 	std::string date;
 	std::string token;
 	double speed;
-	errorType error;
-	statusType status;
+	errorType::errorVar error;
+	statusType::statusVar status;
 	unsigned int numberOfTweets;
 	unsigned int currentTweetNumber;
 
