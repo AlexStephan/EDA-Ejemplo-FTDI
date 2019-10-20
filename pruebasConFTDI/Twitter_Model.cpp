@@ -1,1 +1,141 @@
 #include "Twitter_Model.h"
+#include "curl/curl.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "json.hpp"
+
+using json = nlohmann::json;
+
+Twitter_Model::Twitter_Model() : status(WELCOME), error(NONE)
+{
+	getBearerToken();
+}
+
+void Twitter_Model::getBearerToken()
+{
+	json tokenJson;
+	std::string path = "https://api.twitter.com/oauth2/token";
+
+	curl = curl_easy_init();
+	if (curl)
+	{
+		curl_easy_setopt(curl, CURLOPT_URL, path.c_str());
+		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, sizeof("grant_type=client_credentials"));
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+		curl_easy_setopt(curl, CURLOPT_USERPWD, "mHNUHhKMeOMP8uSe1jI26Uzw8:cOlmgKA4Dv1ILoNQa8G3uHrmEZZ7IdrcXpgopZkH5sdRT0mQHx");
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, "Content-Type: application/x-www-form-urlencoded;charset=UTF-8");
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &token);
+
+		if (curl_easy_perform(curl) != CURLE_OK)
+		{
+			error = CANT_CONNECT;
+		}
+		curl_easy_cleanup(curl);
+	}
+	tokenJson = json::parse(token);
+	token = tokenJson["access_token"];
+
+}
+
+void Twitter_Model::downloadTweets(void)
+{
+	int runningHandles = 1;
+	int curlMessages;
+	CURLMsg* curlMsg;
+
+	if (status != LOADING)
+	{
+		curl = curl_multi_init();
+		CURL* curlEasy = curl_easy_init();
+
+		std::string url = "https://api.twitter.com/1.1/statuses/user_timeline.json?";
+		std::string screenName = "screen_name=" + user;
+		std::string twCount = "count=" + std::to_string(numberOfTweets);
+		url += screenName;
+		url += '&';
+		url += twCount;
+
+		curl_easy_setopt(curlEasy, CURLOPT_URL, url.c_str());
+		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tweetsString);
+		curl_multi_add_handle(curl, curlEasy);
+		status = LOADING;
+	}
+
+	curl_multi_perform(curl, &runningHandles);
+	while ((curlMsg = curl_multi_info_read(curl, &curlMessages))->msg != CURLMSG_DONE && curlMessages != 0)
+	{
+		if (curlMsg->data.result != CURLE_OK)
+		{
+			error = CANT_CONNECT;
+		}
+	}
+
+	if (curlMsg->msg == CURLMSG_DONE || status == STOPPED_LOADING)
+	{
+		status = FINISHED_LOADING;
+		tweets = json::parse(tweetsString);
+
+		if (tweets.size() == 0)
+		{
+			error = NO_TWEETS_AVAILABLE;
+		}
+	}
+}
+
+const char* Twitter_Model::getUser()
+{ 
+	return user.c_str(); 
+} //Cuando no corresponda, puede devolver NULL
+
+const char* Twitter_Model::getTuit() 
+{
+	tuit = tweets[currentTweetNumber - 1]["text"];
+	return tuit.c_str();
+} //Si es mas facil q sea un string, avisar a Alex
+
+const char* Twitter_Model::getDate() 
+{
+	date = tweets[currentTweetNumber - 1]["created_at"];
+	return date.c_str();
+} //lo mismo. No se en q formato lo vas a leer, pero seguro tiene forma "Thu Dec 04 18:51:57 +0000 2008"
+
+double Twitter_Model::getSpeed() 
+{
+	return speed;
+}
+
+errorType Twitter_Model::getError() 
+{
+	return error;
+}
+
+statusType Twitter_Model::getStatus()
+{ 
+	return status; 
+}
+
+unsigned int Twitter_Model::getNumberOfTweets() 
+{
+	numberOfTweets = tweets.size();
+	return numberOfTweets;
+}
+
+unsigned int Twitter_Model::getCurrentTweetNumber() 
+{
+	return currentTweetNumber;
+}
+
+
+static size_t curlWriteData(void* contents, size_t size, size_t nmemb, void* userp)
+{
+	size_t realsize = size * nmemb;
+	char* data = (char*)contents;
+	std::string* s = (std::string*)userp;
+	s->append(data, realsize);
+	return realsize;						//recordar siempre devolver realsize
+}

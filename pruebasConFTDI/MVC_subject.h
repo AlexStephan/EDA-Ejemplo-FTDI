@@ -16,8 +16,6 @@ public:
 
 protected:
 	void notifyAllObservers(void);
-
-private:
 	std::list<MVC_observer*> listOfObservers;
 
 };
