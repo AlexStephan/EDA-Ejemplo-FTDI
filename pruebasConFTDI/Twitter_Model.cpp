@@ -64,6 +64,7 @@ void Twitter_Model::downloadTweets(void)
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tweetsString);
 		curl_multi_add_handle(curl, curlEasy);
 		status = statusType::LOADING;
+		this->notifyAllObservers();
 	}
 
 	curl_multi_perform(curl, &runningHandles);
@@ -84,9 +85,11 @@ void Twitter_Model::downloadTweets(void)
 		{
 			error = errorType::NO_TWEETS_AVAILABLE;
 		}
+
+		this->notifyAllObservers();
 	}
 
-	this->notifyAllObservers();
+	
 }
 
 
