@@ -20,29 +20,30 @@ public:
 private:
 	std::string phraseToScroll;
 	size_t sizeofPhrase;
-	bool scrollPhase;	//La frase es demasiado larga para el display? es decir, es necesario scrollearla?
+	bool scrollPhrase;	//La frase es demasiado larga para el display? es decir, es necesario scrollearla?
 	bool beginningOfPhrase; //La frase a scrollear se encuentra en su posicion inicial. Es necesario que pase algo de tiempo antes de empezar a scrollearla (mayor al tiempo entre scrolls)
 	interval timeBetweenScrolls; //Tiempo entre scrolls
 	std::chrono::time_point<std::chrono::system_clock> lastScroll;
 	size_t actualPosition;
+
 
 	//Modo LOADING
 	unsigned char currentLoadSymbol; //contador 0 a 11, que hace el siguiente loop:   |{(<({|})>)}|
 	std::chrono::time_point<std::chrono::system_clock> loadSymbolTime;
 
 
-
-
-
 	//MODO SHOW_TWEET
 	std::string formattedCurrent;
 	std::string formattedDate;
 	std::chrono::time_point<std::chrono::system_clock> tweetStartTime;
+	bool alreadySeeingDate;
+
 
 	void control_NewChanges(void);
 	void control_NoChanges(void);
 
-	void set_scrollingPhrase(void);
+	//llamar con set_scrollingPhrase conteniendo el "mensaje crudo" (sin espacios adicionales al final)
+	void set_scrollingPhrase(double setspeed, unsigned int line);
 	void manage_scrollingPhrase(unsigned int line);
 };
 
