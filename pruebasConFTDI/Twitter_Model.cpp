@@ -1,13 +1,12 @@
 #include "Twitter_Model.h"
-#include "curl/curl.h"
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "json.hpp"
+
 
 using json = nlohmann::json;
 
-Twitter_Model::Twitter_Model() : status(WELCOME), error(NONE)
+Twitter_Model::Twitter_Model() : user(NULL), tuit(NULL), date(NULL), token(NULL), speed(5), numberOfTweets(1), currentTweetNumber(1), status(WELCOME), error(NONE)
 {
 	getBearerToken();
 }
@@ -87,22 +86,27 @@ void Twitter_Model::downloadTweets(void)
 	}
 }
 
+
+
+
+//GETTERS
+
 const char* Twitter_Model::getUser()
 { 
 	return user.c_str(); 
-} //Cuando no corresponda, puede devolver NULL
+}
 
 const char* Twitter_Model::getTuit() 
 {
 	tuit = tweets[currentTweetNumber - 1]["text"];
 	return tuit.c_str();
-} //Si es mas facil q sea un string, avisar a Alex
+}
 
 const char* Twitter_Model::getDate() 
 {
 	date = tweets[currentTweetNumber - 1]["created_at"];
 	return date.c_str();
-} //lo mismo. No se en q formato lo vas a leer, pero seguro tiene forma "Thu Dec 04 18:51:57 +0000 2008"
+}
 
 double Twitter_Model::getSpeed() 
 {
@@ -131,11 +135,40 @@ unsigned int Twitter_Model::getCurrentTweetNumber()
 }
 
 
+
+
+
+//SETTERS
+
+void Twitter_Model::setUser(const char* user)
+{
+	this->user = user;
+}
+
+void Twitter_Model::setSpeed(double speed)
+{
+	this->speed = speed;
+}
+
+void Twitter_Model::setCurrentTweetNumber(unsigned int currentTweet)
+{
+	this->currentTweetNumber = currentTweet;
+}
+
+void Twitter_Model::setNumberOfTweets(unsigned int nOfTweets)
+{
+	this->numberOfTweets = nOfTweets;
+}
+
+
+
+//Funcion para recibir data en Curl
+
 static size_t curlWriteData(void* contents, size_t size, size_t nmemb, void* userp)
 {
 	size_t realsize = size * nmemb;
 	char* data = (char*)contents;
 	std::string* s = (std::string*)userp;
 	s->append(data, realsize);
-	return realsize;						//recordar siempre devolver realsize
+	return realsize;					
 }

@@ -1,5 +1,7 @@
 #pragma once
 #include "MVC_subject.h"
+#include "curl/curl.h"
+#include "json.hpp"
 
 //	(\ /)		(\ /)		(\ /)		(\ /)
 //	( ..)		(.. )		( ..)		(.. )
@@ -38,6 +40,12 @@ public:
 	statusType getStatus();
 	unsigned int getNumberOfTweets();
 	unsigned int getCurrentTweetNumber();
+
+	//Setters: necesarios para que el controlador modifique el modelo segun el input del usuario
+	void setUser(const char*);
+	void setSpeed(double);
+	void setCurrentTweetNumber(unsigned int);
+	void setNumberOfTweets(unsigned int);
 
 private:
 	std::string user;
