@@ -5,6 +5,7 @@
 
 
 using json = nlohmann::json;
+static size_t curlWriteData(void* contents, size_t size, size_t nmemb, void* userp);
 
 Twitter_Model::Twitter_Model() : user(NULL), tuit(NULL), date(NULL), token(NULL), speed(5), numberOfTweets(1), currentTweetNumber(1), status(WELCOME), error(NONE)
 {
