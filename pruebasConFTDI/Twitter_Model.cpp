@@ -7,7 +7,7 @@
 using json = nlohmann::json;
 static size_t curlWriteData(void* contents, size_t size, size_t nmemb, void* userp);
 
-Twitter_Model::Twitter_Model() : user(NULL), tuit(NULL), date(NULL), token(NULL), speed(5), numberOfTweets(1), currentTweetNumber(1), status(WELCOME), error(NONE)
+Twitter_Model::Twitter_Model() : user(NULL), tuit(NULL), date(NULL), token(NULL), speed(5), numberOfTweets(1), currentTweetNumber(1), status(statusType::WELCOME), error(errorType::NONE)
 {
 	getBearerToken();
 }
@@ -31,7 +31,7 @@ void Twitter_Model::getBearerToken()
 
 		if (curl_easy_perform(curl) != CURLE_OK)
 		{
-			error = CANT_CONNECT;
+			error = errorType::CANT_CONNECT;
 		}
 		curl_easy_cleanup(curl);
 	}
@@ -46,7 +46,7 @@ void Twitter_Model::downloadTweets(void)
 	int curlMessages;
 	CURLMsg* curlMsg;
 
-	if (status != LOADING)
+	if (status != statusType::LOADING)
 	{
 		curl = curl_multi_init();
 		CURL* curlEasy = curl_easy_init();
@@ -63,7 +63,7 @@ void Twitter_Model::downloadTweets(void)
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tweetsString);
 		curl_multi_add_handle(curl, curlEasy);
-		status = LOADING;
+		status = statusType::LOADING;
 	}
 
 	curl_multi_perform(curl, &runningHandles);
@@ -71,18 +71,18 @@ void Twitter_Model::downloadTweets(void)
 	{
 		if (curlMsg->data.result != CURLE_OK)
 		{
-			error = CANT_CONNECT;
+			error = errorType::CANT_CONNECT;
 		}
 	}
 
-	if (curlMsg->msg == CURLMSG_DONE || status == STOPPED_LOADING)
+	if (curlMsg->msg == CURLMSG_DONE || status == statusType::STOPPED_LOADING)
 	{
-		status = FINISHED_LOADING;
+		status = statusType::FINISHED_LOADING;
 		tweets = json::parse(tweetsString);
 
 		if (tweets.size() == 0)
 		{
-			error = NO_TWEETS_AVAILABLE;
+			error = errorType::NO_TWEETS_AVAILABLE;
 		}
 	}
 

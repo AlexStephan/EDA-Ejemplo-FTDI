@@ -24,8 +24,8 @@ namespace statusType {
 		STOPPED_LOADING,	//El usuario cancelo la carga de Tweets (getNumberOfTweets DEBE SER FUNCIONAL)
 		SHOW_TWEET,	//Mostrar el Tweet en el display (getUser,getTuit, getDate, getSpeed, getNumberOfTweets y getCurrentTweetNumber deben ser funcionales)
 		GOODBYE	//Ultimo mensaje antes de apagar el LCD. IDEA: una vez q el ciclo principal del main (controller y viewer.step()) haya acabado, mantener en loop al LCD hasta q el mismo haya finalizado)
-	}
-};
+	};
+}
 
 class Twitter_Model :
 	public MVC_subject
