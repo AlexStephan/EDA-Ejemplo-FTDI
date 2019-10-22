@@ -60,43 +60,7 @@ int not_main_anymore(void)
 	return 0;
 }
 
-void launchGui() {
-	Twitter_Controller testi;
 
-	bool running = true;
-	while (running)
-	{
-		ALLEGRO_EVENT ev;
-		while (al_get_next_event(testi.getEventQueue(), &ev))
-		{
-			ImGui_ImplAllegro5_ProcessEvent(&ev);
-			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-				running = false;
-			}
-			if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE)
-			{
-				ImGui_ImplAllegro5_InvalidateDeviceObjects();
-				al_acknowledge_resize(testi.getDisplay());
-				ImGui_ImplAllegro5_CreateDeviceObjects();
-			}
-		}
-
-		//Start Dear ImGui frame
-		ImGui_ImplAllegro5_NewFrame();
-		ImGui::NewFrame();
-
-		//Pide input del ususario
-		if (testi.getUserFlag()) {
-			if (!testi.askUsername() && !testi.getUserFlag()) {
-				break;
-			}
-		}
-
-		// Rendering
-		testi.show();
-}
-
-}
 
 #if LCD_MODE == ONE_SENTENCE
 

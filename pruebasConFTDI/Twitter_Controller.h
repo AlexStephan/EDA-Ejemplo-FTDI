@@ -13,25 +13,22 @@
 #define MAX_VEL 10
 #define DEFAULT_CANT 10		//??
 
+
 class Twitter_Controller :
 	public MVC_observer
 {
 public:
-	Twitter_Controller(Twitter_Model* m) : model(m){};
+	Twitter_Controller(Twitter_Model* m);
 	~Twitter_Controller();
-	virtual void update(void*) {};
-	bool isFinished(void) {};
-	void cycle(void) {};
+	void update(void*);
+	bool isFinished(void);
+	void cycle(void);
 
 	ALLEGRO_DISPLAY* getDisplay();
 	ALLEGRO_EVENT_QUEUE* getEventQueue();
 
 	void show();
-	bool askUsername();
-	bool getUserFlag();
-
-	void drawController();
-	void setMyModel(Twitter_Model*);
+	void drawWindows();
 
 private:
 	Twitter_Model* model;
@@ -40,16 +37,23 @@ private:
 	ImVec2 cursor;
 	ImVec4 clear_color;
 
-	Twitter_Model* mimodel;		//un puntero al model
+	errorType::errorVar error;
+	statusType::statusVar status;
 
-	bool askUser;
 	char username[MAX_UNAME];
 	int vel;					//velocidad
 
-	bool userFound;
+	bool finished;
+
 	int cant;					//cantidad te tuits para mostrar
-	int show_download_window;
-	int downloadDone;
 	int tweetsAvailable;
+
+	int showThisTweet;
+
+	//window flags
+	bool show_welcome_window;
+	bool show_loading_window;
+	bool show_tweet_window;
+	bool show_error_window;
 };
 

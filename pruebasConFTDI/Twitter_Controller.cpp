@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Twitter_Controller::Twitter_Controller(Twitter_Model* m) {
+Twitter_Controller::Twitter_Controller(Twitter_Model* m) :model(m) {
 
 	// Setup Allegro
 	al_init();
@@ -38,12 +38,13 @@ Twitter_Controller::Twitter_Controller(Twitter_Model* m) {
 
 	// Initialize Variables
 	cursor = ImVec2(0, 0);
-	askUser = true;
 	vel = 5;
 	cant = 0;
-	userFound = false;
-	show_download_window = 0;
-	downloadDone = 0;
+
+	show_welcome_window = false;
+	show_loading_window = false;
+	show_tweet_window = false;
+	show_error_window = false;
 }
 
 Twitter_Controller::~Twitter_Controller() {
@@ -59,10 +60,6 @@ void Twitter_Controller::show() {
 	al_flip_display();
 }
 
-bool Twitter_Controller::getUserFlag() {
-	return askUser;
-}
-
 ALLEGRO_DISPLAY* Twitter_Controller::getDisplay() {
 	return display;
 }
@@ -71,117 +68,130 @@ ALLEGRO_EVENT_QUEUE* Twitter_Controller::getEventQueue() {
 	return queue;
 }
 
-void Twitter_Controller::setMyModel(Twitter_Model* model) {
-	mimodel = model;
+
+bool Twitter_Controller::isFinished()
+{
+	return finished;
 }
 
-bool Twitter_Controller::askUsername() {
-	bool r = false;
-	ImGui::Begin("Tweet LCD ", &askUser);
 
-	ImGui::Text("Por favor, ingrese el nombre de usuario del que desea \nobtener los tuits y la cantidad de tuits a bajar.");
-	ImGui::NewLine();
-	ImGui::InputText("Usuario de Twitter", username, MAX_UNAME);
-	ImGui::NewLine();
-	ImGui::InputInt("Cantidad de tuits", &cant); //falta chequear si el numero es positivo
-	ImGui::Text("Si no elige una cantidad, se usara el default de Twitter");
-	ImGui::NewLine();
 
-	if (ImGui::Button("Submit")) {
-		//si el usuario no ingresó cantidad o ingresó cantidad negativo
-		if (cant <= 0) {
-			cant = DEFAULT_CANT;
-		}
+void Twitter_Controller::cycle() 
+{
+	error = model->getError();
+	status = model->getStatus();
 
-		mimodel->setNumberOfTweets(cant);
-		mimodel->setUser(username);
+	//setting the window flags
+	if (error == errorType::NONE) 
+	{
+		show_error_window = false;
 
-		/* TODO:
-		 * recieve information if user was found
-		 */
+		switch (status) 
+		{
+		case statusType::WELCOME:
+			show_welcome_window = true;
+			show_loading_window = false;
+			show_tweet_window = false;
+			break;
 
-		 //userFound = true;
+		case statusType::LOADING:
+			show_welcome_window = true;
+			show_loading_window = true;
+			show_tweet_window = false;
+			break;
 
-		//if todo bien
-		show_download_window = true;
+		case statusType::FINISHED_LOADING:
+		case statusType::STOPPED_LOADING:
+		case statusType::SHOW_TWEET:
+			show_welcome_window = true;
+			show_loading_window = false;
+			show_tweet_window = true;
+			break;
 
-		if (userFound) {
-			askUser = false;
-			/* TODO:
-			 *
-			 */
-			cout << "ok" << endl;
-		}
-		else {
-			//error
-			askUser = true;
-			cout << "not ok" << endl;
+
+		case statusType::GOODBYE:
+			show_welcome_window = false;
+			show_loading_window = false;
+			show_tweet_window = false;
 		}
 	}
-	ImGui::End();
+	//error
+	else 
+	{
+		show_error_window = true;
 
-	if (show_download_window) {
+		show_welcome_window = true;
+		show_loading_window = false;
+		show_tweet_window = false;
+	}
+
+	drawWindows();
+}
+
+void Twitter_Controller::drawWindows()
+{
+	if (show_welcome_window) 
+	{
+		ImGui::Begin("Tweet LCD ");
+
+		ImGui::Text("Por favor, ingrese el nombre de usuario del que desea \nobtener los tuits y la cantidad de tuits a bajar.");
+		ImGui::NewLine();
+		ImGui::InputText("Usuario de Twitter", username, MAX_UNAME);
+		ImGui::NewLine();
+		ImGui::InputInt("Cantidad de tuits", &cant);
+		if (cant < 1) { cant = 1; }
+		ImGui::Text("Si no elige una cantidad, se usara el default de Twitter");
+		ImGui::NewLine();
+
+		if (ImGui::Button("Submit")) {
+
+			model->setNumberOfTweets(cant);
+			model->setUser(username);
+			/* TO DO:
+			 * recieve information if user was found
+			 */
+		}
+		ImGui::End();
+	}
+	if (show_loading_window)
+	{
 		ImGui::Begin("Output");
 		ImGui::Text("Cargando tuits...");
 		if (ImGui::Button("Stop")) {
 
 			//TODO: stop descarga
 
-			tweetsAvailable = mimodel->getNumberOfTweets;
-			downloadDone = 1;
-		}
-		if (mimodel->getStatus() == statusType::FINISHED_LOADING) {
-			tweetsAvailable = mimodel->getNumberOfTweets;
-			downloadDone = 1;
+			tweetsAvailable = model->getNumberOfTweets();
 		}
 		ImGui::End();
 	}
 
-	if (downloadDone) {
-		show_download_window = 0;
-		drawController();
+	if (show_tweet_window)
+	{
+		ImGui::Begin("LCD Controller");
+		ImGui::Text("Desgargado %d tuits", tweetsAvailable);
+		ImGui::Text("Mostrando tuits del usuario @%s", username);
+		ImGui::NewLine();
+		ImGui::Text("Opciones:");
+		ImGui::NewLine();
+		ImGui::InputInt("Tuit para mostrar", &showThisTweet);
+		if (showThisTweet > tweetsAvailable) { showThisTweet = tweetsAvailable; }
+		if (showThisTweet < 1) { showThisTweet = 1; }
 
+		ImGui::NewLine();
+		ImGui::Text("Velocidad: %d", vel);
+		ImGui::SliderInt("Velocidad", &vel, 0, MAX_VEL);
+		ImGui::NewLine();
+
+		ImGui::NewLine();
+		if (ImGui::Button("Mostrar")) {
+			//TODO: mostrar
+		}
+
+		if (ImGui::Button("Salir")) {
+			//TODO: salir
+		}
+
+		ImGui::End();
 	}
-
-	return r;
-}
-
-void Twitter_Controller::drawController() {
-
-	ImGui::Begin("LCD Controller");
-	ImGui::Text("Desgargado %d tuits", tweetsAvailable);
-	ImGui::Text("Mostrando tuits del usuario @%s", username);
-	ImGui::NewLine();
-	ImGui::Text("Opciones:");
-	ImGui::NewLine();
-	if (ImGui::Button(" << anterior")) {
-		//... 
-		cout << "Tuit anterior" << endl;
-	}
-
-	ImGui::SameLine();
-	if (ImGui::Button(" actual ")) {
-		//...
-		cout << "Actual de nuevo" << endl;
-
-	}
-
-	ImGui::SameLine();
-	if (ImGui::Button("siguiente >>")) {
-		//...
-		cout << "Tuit siguiente" << endl;
-	}
-
-	ImGui::NewLine();
-	ImGui::Text("Velocidad: %d", vel);
-	ImGui::SliderInt("Velocidad", &vel, 0, MAX_VEL);
-	ImGui::NewLine();
-
-	ImGui::NewLine();
-	if (ImGui::Button("Salir")) {
-		//TODO: salir
-	}
-
-	ImGui::End();
-
 }
