@@ -17,26 +17,28 @@ Twitter_Model::Twitter_Model() : user(), tuit(), date(), token(), speed(5), numb
 void Twitter_Model::getBearerToken()
 {
 	json tokenJson;
-	std::string path = "https://api.twitter.com/oauth2/token";
 
-	curl = curl_easy_init();
-	if (curl)
+	if (curlEasy)
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, path.c_str());
-		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-		curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, sizeof("grant_type=client_credentials"));
-		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-		curl_easy_setopt(curl, CURLOPT_USERPWD, "mHNUHhKMeOMP8uSe1jI26Uzw8:cOlmgKA4Dv1ILoNQa8G3uHrmEZZ7IdrcXpgopZkH5sdRT0mQHx");
-		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, "Content-Type: application/x-www-form-urlencoded;charset=UTF-8");
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &token);
-		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+		curl_easy_setopt(curlEasy, CURLOPT_URL, "https://api.twitter.com/oauth2/token");
+		curl_easy_setopt(curlEasy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
+		curl_easy_setopt(curlEasy, CURLOPT_FOLLOWLOCATION, 1L);
+		curl_easy_setopt(curlEasy, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_easy_setopt(curlEasy, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+		curl_easy_setopt(curlEasy, CURLOPT_POSTFIELDSIZE, 29L);
+		curl_easy_setopt(curlEasy, CURLOPT_USERPWD, "mHNUHhKMeOMP8uSe1jI26Uzw8:cOlmgKA4Dv1ILoNQa8G3uHrmEZZ7IdrcXpgopZkH5sdRT0mQHx");
+		curl_easy_setopt(curlEasy, CURLOPT_HTTPHEADER, "Content-Type: application/x-www-form-urlencoded;charset=UTF-8");
+		curl_easy_setopt(curlEasy, CURLOPT_WRITEFUNCTION, curlWriteData);
+		curl_easy_setopt(curlEasy, CURLOPT_WRITEDATA, &token);
+		curl_easy_setopt(curlEasy, CURLOPT_SSL_VERIFYPEER, 0L);
 
-		if (curl_easy_perform(curl) != CURLE_OK)
+		CURLcode c = curl_easy_perform(curlEasy);
+
+		if (c != CURLE_OK)
 		{
 			error = errorType::CANT_CONNECT;
 		}
-		curl_easy_cleanup(curl);
+		curl_easy_cleanup(curlEasy);
 	}
 	tokenJson = json::parse(token);
 	token = tokenJson["access_token"];
@@ -74,6 +76,7 @@ void Twitter_Model::startLoading()
 	currentTweetNumber = 1;
 	tweets = nullptr;
 	tweetsString = nullptr;
+	curlEasy = curl_easy_init();
 	curl_multi_remove_handle(curl, curlEasy);
 
 	if (numberOfTweets > 0)
