@@ -10,6 +10,8 @@ static size_t curlWriteData(void* contents, size_t size, size_t nmemb, void* use
 Twitter_Model::Twitter_Model() : user(NULL), tuit(NULL), date(NULL), token(NULL), speed(5), numberOfTweets(1), currentTweetNumber(1), status(statusType::WELCOME), error(errorType::NONE)
 {
 	getBearerToken();
+	curl = curl_multi_init();
+	curlEasy = curl_easy_init();
 }
 
 void Twitter_Model::getBearerToken()
@@ -28,6 +30,7 @@ void Twitter_Model::getBearerToken()
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, "Content-Type: application/x-www-form-urlencoded;charset=UTF-8");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &token);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 
 		if (curl_easy_perform(curl) != CURLE_OK)
 		{
@@ -40,32 +43,12 @@ void Twitter_Model::getBearerToken()
 	this->notifyAllObservers();
 }
 
-void Twitter_Model::downloadTweets(void)
+void Twitter_Model::continueLoading()
 {
 	int runningHandles = 1;
 	int curlMessages;
 	CURLMsg* curlMsg;
 
-	if (status != statusType::LOADING)
-	{
-		curl = curl_multi_init();
-		CURL* curlEasy = curl_easy_init();
-
-		std::string url = "https://api.twitter.com/1.1/statuses/user_timeline.json?";
-		std::string screenName = "screen_name=" + user;
-		std::string twCount = "count=" + std::to_string(numberOfTweets);
-		url += screenName;
-		url += '&';
-		url += twCount;
-
-		curl_easy_setopt(curlEasy, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tweetsString);
-		curl_multi_add_handle(curl, curlEasy);
-		status = statusType::LOADING;
-		this->notifyAllObservers();
-	}
 
 	curl_multi_perform(curl, &runningHandles);
 	while ((curlMsg = curl_multi_info_read(curl, &curlMessages))->msg != CURLMSG_DONE && curlMessages != 0)
@@ -73,26 +56,81 @@ void Twitter_Model::downloadTweets(void)
 		if (curlMsg->data.result != CURLE_OK)
 		{
 			error = errorType::CANT_CONNECT;
+			this->notifyAllObservers();
 		}
 	}
 
-	if (curlMsg->msg == CURLMSG_DONE || status == statusType::STOPPED_LOADING)
+	if (curlMsg->msg == CURLMSG_DONE)
 	{
 		status = statusType::FINISHED_LOADING;
-		tweets = json::parse(tweetsString);
-
-		if (tweets.size() == 0)
-		{
-			error = errorType::NO_TWEETS_AVAILABLE;
-		}
-
 		this->notifyAllObservers();
 	}
-
-	
 }
 
+void Twitter_Model::startLoading()
+{
+	tuit = nullptr;
+	date = nullptr;
+	currentTweetNumber = 1;
+	tweets = nullptr;
+	tweetsString = nullptr;
+	curl_multi_remove_handle(curl, curlEasy);
 
+	if (numberOfTweets > 0)
+	{
+		std::string url = "https://api.twitter.com/1.1/statuses/user_timeline.json?";
+		std::string screenName = "screen_name=" + user;
+		std::string twCount = "count=" + std::to_string(numberOfTweets);
+		url += screenName;
+		url += '&';
+		url += twCount;
+		curl_easy_setopt(curlEasy, CURLOPT_URL, url.c_str());
+		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tweetsString);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+		curl_multi_add_handle(curl, curlEasy);
+		status = statusType::LOADING;
+		this->notifyAllObservers();
+	}
+	else
+		error = errorType::NO_TWEETS_AVAILABLE;
+
+}
+
+void Twitter_Model::stopLoading()
+{
+	curl_multi_remove_handle(curl, curlEasy);
+	curl_easy_cleanup(curlEasy);
+	curl_multi_cleanup(curl);
+
+	try {
+		tweets = json::parse(tweetsString);
+	}
+	catch (exception& e)
+	{
+		json::iterator it = tweets.end();
+		it--;
+		tweets.erase(it);
+	}
+
+	if (tweets.empty())
+	{
+		error = errorType::NO_TWEETS_AVAILABLE;
+	}
+	this->notifyAllObservers();
+}
+
+void Twitter_Model::endModel()
+{
+	status = statusType::GOODBYE;
+	this->notifyAllObservers();
+}
+
+void Twitter_Model::readTweet() {
+	status = statusType::SHOW_TWEET;
+	this->notifyAllObservers();
+}
 
 
 //GETTERS

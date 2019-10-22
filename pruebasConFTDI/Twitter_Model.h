@@ -34,7 +34,11 @@ class Twitter_Model :
 public:
 
 	Twitter_Model();
-	void downloadTweets();
+	void startLoading();
+	void continueLoading();
+	void stopLoading();
+	void endModel();
+	void readTweet();
 	//Getters: necesarios para el viewer que maneja el Display
 	const char* getUser(); 
 	const char* getTuit();
@@ -66,6 +70,7 @@ private:
 	nlohmann::json tweets;
 	std::string tweetsString;
 	CURL* curl;
+	CURL* curlEasy;
 
 	//Token generation
 	void getBearerToken(void);
