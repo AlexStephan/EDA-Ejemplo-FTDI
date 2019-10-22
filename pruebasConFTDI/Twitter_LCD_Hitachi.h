@@ -47,5 +47,7 @@ private:
 	void manage_scrollingPhrase(unsigned int line);
 
 	void create_formattedDate(void);
+
+	std::string AtoAscii(const std::string& s);
 };
 

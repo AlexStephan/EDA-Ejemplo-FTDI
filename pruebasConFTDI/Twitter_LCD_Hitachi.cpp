@@ -74,7 +74,7 @@ void Twitter_LCD_Hitachi::control_NewChanges(void)
 			break;
 		case statusType::LOADING:
 			phraseToScroll = '@';
-			phraseToScroll += user;
+			phraseToScroll += AtoAscii(user);
 
 			set_scrollingPhrase(LOADING_NAME_SPEED, 0);
 
@@ -98,9 +98,9 @@ void Twitter_LCD_Hitachi::control_NewChanges(void)
 			formattedCurrent += '/';
 			formattedCurrent += to_string(numberOfTweets);
 
-			phraseToScroll = user;
+			phraseToScroll = AtoAscii(user);
 			phraseToScroll += ": \"";
-			phraseToScroll += tweet;
+			phraseToScroll += AtoAscii(tweet);
 			phraseToScroll += "\"";
 
 			create_formattedDate();
@@ -296,4 +296,40 @@ void Twitter_LCD_Hitachi::create_formattedDate(void)
 
 	formattedDate = day + '/' + month + '/' + year + " - "
 		+ hour + ':' + minute;
+}
+
+string Twitter_LCD_Hitachi::AtoAscii(const string& s)
+{
+	string rta;
+	size_t size = s.size();
+	char c;
+	for (size_t i = 0; i < size; i++) {
+		c = s[i];
+		switch (c) {
+		case 'á':
+			c = 'a';
+			break;
+		case 'é':
+			c = 'e';
+			break;
+		case 'í':
+			c = 'i';
+			break;
+		case 'ó':
+			c = 'o';
+			break;
+		case 'ú':
+			c = 'u';
+			break;
+		case 'ñ':
+			c = 'n';
+			break;
+		default:
+			//Do nothing
+			break;
+		}
+		rta += c;
+	}
+
+	return rta;
 }
