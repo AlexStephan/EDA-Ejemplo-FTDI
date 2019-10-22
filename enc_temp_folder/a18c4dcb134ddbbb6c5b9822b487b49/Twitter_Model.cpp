@@ -10,12 +10,13 @@ static size_t curlWriteData(void* contents, size_t size, size_t nmemb, void* use
 Twitter_Model::Twitter_Model() : user(), tuit(), date(), token(), speed(5), numberOfTweets(1), currentTweetNumber(1), status(statusType::WELCOME), error(errorType::NONE)
 {
 	getBearerToken();
+	curl = curl_multi_init();
+	curlEasy = curl_easy_init();
 }
 
 void Twitter_Model::getBearerToken()
 {
 	json tokenJson;
-	curlEasy = curl_easy_init();
 
 	if (curlEasy)
 	{
@@ -75,8 +76,8 @@ void Twitter_Model::startLoading()
 	currentTweetNumber = 1;
 	tweets = nullptr;
 	tweetsString = nullptr;
-	curl = curl_multi_init();
 	curlEasy = curl_easy_init();
+	curl_multi_remove_handle(curl, curlEasy);
 
 	if (numberOfTweets > 0)
 	{
@@ -87,12 +88,10 @@ void Twitter_Model::startLoading()
 		url += '&';
 		url += twCount;
 		curl_easy_setopt(curlEasy, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curlEasy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
+		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tweetsString);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-		curl_easy_setopt(curlEasy, CURLOPT_FOLLOWLOCATION, 1L);
-		curl_easy_setopt(curlEasy, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		curl_multi_add_handle(curl, curlEasy);
 		status = statusType::LOADING;
 		this->notifyAllObservers();
