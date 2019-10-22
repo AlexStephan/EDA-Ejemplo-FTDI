@@ -19,9 +19,16 @@ Twitter_LCD_Hitachi::Twitter_LCD_Hitachi()
 	beginningOfPhrase(false),
 	timeBetweenScrolls(),
 	lastScroll(),
+	actualPosition(0),
 
 	currentLoadSymbol(0),
-	loadSymbolTime()
+	loadSymbolTime(),
+
+	formattedCurrent(),
+	formattedDate(),
+	tweetStartTime(),
+	alreadySeeingDate(false)
+
 
 {
 }
