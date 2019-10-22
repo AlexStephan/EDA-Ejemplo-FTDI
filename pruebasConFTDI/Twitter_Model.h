@@ -1,15 +1,13 @@
 #pragma once
-#include "MVC_subject.h"
-#include "curl/curl.h"
-#include "json.hpp"
 
-//	(\ /)		(\ /)		(\ /)		(\ /)
-//	( ..)		(.. )		( ..)		(.. )
-//	o(")(")	  (")(")o		o(")(")	  (")(")o
-//
-//NOTA: ELIMINAR EN EL ARCHIVO FINAL, SI ALEX AUN NO SE HIZO CARGO
-class testingViewerThroughModel;
-//
+//#pragma comment(lib, "lib/libcurl_a.lib")
+
+#include "MVC_subject.h"
+
+#define CURL_STATICLIB
+#include <curl/curl.h>
+
+#include "json.hpp"
 
 
 namespace errorType { //Ante un error, se ignora el contenido de Status
@@ -77,13 +75,6 @@ private:
 
 
 
-//	(\ /)		(\ /)		(\ /)		(\ /)
-//	( ..)		(.. )		( ..)		(.. )
-//	o(")(")	  (")(")o		o(")(")	  (")(")o
-//
-//NOTA: ELIMINAR EN EL ARCHIVO FINAL, SI ALEX AUN NO SE HIZO CARGO
-	friend testingViewerThroughModel;
-//
 
 
 

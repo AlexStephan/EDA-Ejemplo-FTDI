@@ -7,7 +7,7 @@
 using json = nlohmann::json;
 static size_t curlWriteData(void* contents, size_t size, size_t nmemb, void* userp);
 
-Twitter_Model::Twitter_Model() : user(NULL), tuit(NULL), date(NULL), token(NULL), speed(5), numberOfTweets(1), currentTweetNumber(1), status(statusType::WELCOME), error(errorType::NONE)
+Twitter_Model::Twitter_Model() : user(), tuit(), date(), token(), speed(5), numberOfTweets(1), currentTweetNumber(1), status(statusType::WELCOME), error(errorType::NONE)
 {
 	getBearerToken();
 	curl = curl_multi_init();
@@ -107,7 +107,7 @@ void Twitter_Model::stopLoading()
 	try {
 		tweets = json::parse(tweetsString);
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
 		json::iterator it = tweets.end();
 		it--;
