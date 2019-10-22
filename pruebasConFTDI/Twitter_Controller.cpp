@@ -1,5 +1,4 @@
 #include "Twitter_Controller.h"
-
 #include <iostream>
 
 using namespace std;
@@ -37,9 +36,17 @@ Twitter_Controller::Twitter_Controller(Twitter_Model* m) :model(m) {
 	ImGui_ImplAllegro5_Init(display);
 
 	// Initialize Variables
-	cursor = ImVec2(0, 0);
 	vel = 5;
 	cant = 0;
+	for (int i = 0; i < MAX_UNAME; i++)
+		username[i] = { false };
+
+	finished = false;
+	showThisTweet = 0;
+	tweetsAvailable = 0;
+
+	error = model->getError();
+	status = model->getStatus();
 
 	show_welcome_window = false;
 	show_loading_window = false;
@@ -60,21 +67,19 @@ void Twitter_Controller::show() {
 	al_flip_display();
 }
 
-ALLEGRO_DISPLAY* Twitter_Controller::getDisplay() {
-	return display;
+void Twitter_Controller::update(void*) {
+	error = model->getError();
+	if (error == errorType::NONE) {
+		status = model->getStatus();
+		if (status == statusType::SHOW_TWEET ||
+			status == statusType::FINISHED_LOADING ||
+			status == statusType::STOPPED_LOADING) {
+			tweetsAvailable = model->getNumberOfTweets();
+		}
+		if (status == statusType::GOODBYE)
+			finished = true;
+	}
 }
-
-ALLEGRO_EVENT_QUEUE* Twitter_Controller::getEventQueue() {
-	return queue;
-}
-
-
-bool Twitter_Controller::isFinished()
-{
-	return finished;
-}
-
-
 
 void Twitter_Controller::cycle() 
 {
@@ -125,7 +130,28 @@ void Twitter_Controller::cycle()
 		show_tweet_window = false;
 	}
 
+	ALLEGRO_EVENT ev;
+	while (al_get_next_event(getEventQueue(), &ev))
+	{
+		ImGui_ImplAllegro5_ProcessEvent(&ev);
+		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			finished = true;
+		}
+		if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE)
+		{
+			ImGui_ImplAllegro5_InvalidateDeviceObjects();
+			al_acknowledge_resize(getDisplay());
+			ImGui_ImplAllegro5_CreateDeviceObjects();
+		}
+	}
+	ImGui_ImplAllegro5_NewFrame();
+	ImGui::NewFrame();
+
 	drawWindows();
+
+	// Rendering
+	show();
+	ImGui::EndFrame();
 }
 
 void Twitter_Controller::drawWindows()
@@ -147,9 +173,10 @@ void Twitter_Controller::drawWindows()
 
 			model->setNumberOfTweets(cant);
 			model->setUser(username);
-			/* TO DO:
-			 * recieve information if user was found
-			 */
+
+			//TO DO: recieve information if user was found
+
+			model->startLoading();
 		}
 		ImGui::End();
 	}
@@ -157,11 +184,14 @@ void Twitter_Controller::drawWindows()
 	{
 		ImGui::Begin("Output");
 		ImGui::Text("Cargando tuits...");
+
 		if (ImGui::Button("Stop")) {
-
-			//TODO: stop descarga
-
+			//stop descarga
 			tweetsAvailable = model->getNumberOfTweets();
+			model->stopLoading();
+		}
+		else {
+			model->continueLoading();
 		}
 		ImGui::End();
 	}
@@ -185,13 +215,49 @@ void Twitter_Controller::drawWindows()
 
 		ImGui::NewLine();
 		if (ImGui::Button("Mostrar")) {
-			//TODO: mostrar
+			model->readTweet();
 		}
-
 		if (ImGui::Button("Salir")) {
-			//TODO: salir
+			model->endModel();
 		}
 
 		ImGui::End();
 	}
+
+	if (show_error_window)
+	{
+		ImGui::Begin("Output");
+		ImGui::Text("Hubo un error!");
+
+		switch (error)
+		{
+		case errorType::CANT_CONNECT:
+			ImGui::Text("Can't connect to Twitter");
+			break;
+		case errorType::NON_EXISTENT_USER:
+			ImGui::Text("Can't find a user with given username");
+			break;
+		case errorType::NO_TWEETS_AVAILABLE:
+			ImGui::Text("No tweets available");
+			break;
+		}
+
+		if (ImGui::Button("Ok")) {
+			show_error_window = false;
+		}
+		ImGui::End();
+	}
+}
+
+ALLEGRO_DISPLAY* Twitter_Controller::getDisplay() {
+	return display;
+}
+
+ALLEGRO_EVENT_QUEUE* Twitter_Controller::getEventQueue() {
+	return queue;
+}
+
+bool Twitter_Controller::isFinished()
+{
+	return finished;
 }

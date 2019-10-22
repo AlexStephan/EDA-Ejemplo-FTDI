@@ -11,7 +11,6 @@
 
 #define MAX_UNAME 16
 #define MAX_VEL 10
-#define DEFAULT_CANT 10		//??
 
 
 class Twitter_Controller :
@@ -34,21 +33,19 @@ private:
 	Twitter_Model* model;
 	ALLEGRO_DISPLAY* display;
 	ALLEGRO_EVENT_QUEUE* queue;
-	ImVec2 cursor;
 	ImVec4 clear_color;
 
 	errorType::errorVar error;
 	statusType::statusVar status;
 
-	char username[MAX_UNAME];
+	char username[MAX_UNAME];	//usuario de Twitter
 	int vel;					//velocidad
 
 	bool finished;
 
 	int cant;					//cantidad te tuits para mostrar
-	int tweetsAvailable;
-
-	int showThisTweet;
+	int tweetsAvailable;		//tuits encontrado por la programa
+	int showThisTweet;			//numero de tuit para mostrar
 
 	//window flags
 	bool show_welcome_window;
