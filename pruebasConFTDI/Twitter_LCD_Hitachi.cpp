@@ -47,110 +47,122 @@ void Twitter_LCD_Hitachi::control_NewChanges(void)
 	newChanges = false;
 	(*lcd).lcdClear();
 	string message;
-	switch (status) {
-	case statusType::WELCOME:
-		(*lcd) << (const unsigned char*)"WELCOME TO TP9   TWITTER HITACHI";
-		break;
-	case statusType::GOODBYE:
-		//El LCD ya esta en blanco
-		break;
-	case statusType::FINISHED_LOADING:
-		message = "FINISHED LOADINGTweets: ";
-		message += std::to_string(numberOfTweets);
-		(*lcd) << (unsigned const char*)message.c_str();
-		break;
-	case statusType::STOPPED_LOADING:
-		message = "STOPPED LOADING Tweets: ";
-		message += std::to_string(numberOfTweets);
-		(*lcd) << (unsigned const char*)message.c_str();
-		break;
-	case statusType::LOADING:
-		phraseToScroll = '@';
-		phraseToScroll += user;
+	if (error == errorType::NONE) {
+		switch (status) {
+		case statusType::WELCOME:
+			(*lcd) << (const unsigned char*)"WELCOME TO TP9   TWITTER HITACHI";
+			break;
+		case statusType::GOODBYE:
+			//El LCD ya esta en blanco
+			break;
+		case statusType::FINISHED_LOADING:
+			message = "FINISHED LOADINGTweets: ";
+			message += std::to_string(numberOfTweets);
+			(*lcd) << (unsigned const char*)message.c_str();
+			break;
+		case statusType::STOPPED_LOADING:
+			message = "STOPPED LOADING Tweets: ";
+			message += std::to_string(numberOfTweets);
+			(*lcd) << (unsigned const char*)message.c_str();
+			break;
+		case statusType::LOADING:
+			phraseToScroll = '@';
+			phraseToScroll += user;
 
-		set_scrollingPhrase(LOADING_NAME_SPEED, 0);
+			set_scrollingPhrase(LOADING_NAME_SPEED, 0);
 
-		cursorPosition secLine;
-		secLine.row = 1;
-		secLine.column = 0;
-		lcd->lcdSetCursorPosition(secLine);
+			cursorPosition secLine;
+			secLine.row = 1;
+			secLine.column = 0;
+			lcd->lcdSetCursorPosition(secLine);
 
-		(*lcd) << (unsigned char*) "LOADING";
-		cursorPosition lastChar;
-		lastChar.row = 1;
-		lastChar.column = 15;
-		lcd->lcdSetCursorPosition(lastChar);
-		(*lcd) << '|';
-		currentLoadSymbol = 0;
-		loadSymbolTime = system_clock::now();
-		break;
-	case statusType::SHOW_TWEET:
-		formattedCurrent = "Tweet ";
-		formattedCurrent += to_string(currentTweetNumber);
-		formattedCurrent += '/';
-		formattedCurrent += to_string(numberOfTweets);
+			(*lcd) << (unsigned char*) "LOADING";
+			cursorPosition lastChar;
+			lastChar.row = 1;
+			lastChar.column = 15;
+			lcd->lcdSetCursorPosition(lastChar);
+			(*lcd) << '|';
+			currentLoadSymbol = 0;
+			loadSymbolTime = system_clock::now();
+			break;
+		case statusType::SHOW_TWEET:
+			formattedCurrent = "Tweet ";
+			formattedCurrent += to_string(currentTweetNumber);
+			formattedCurrent += '/';
+			formattedCurrent += to_string(numberOfTweets);
 
-		phraseToScroll = user;
-		phraseToScroll += ": \"";
-		phraseToScroll += tweet;
-		phraseToScroll += "\"";
+			phraseToScroll = user;
+			phraseToScroll += ": \"";
+			phraseToScroll += tweet;
+			phraseToScroll += "\"";
 
-		create_formattedDate();
+			create_formattedDate();
 
-		alreadySeeingDate = false;
-		tweetStartTime = system_clock::now();
+			alreadySeeingDate = false;
+			tweetStartTime = system_clock::now();
 
-		(*lcd) << (unsigned char*)formattedCurrent.c_str();
-		set_scrollingPhrase(speed, 1);
+			(*lcd) << (unsigned char*)formattedCurrent.c_str();
+			set_scrollingPhrase(speed, 1);
 
-		break;
+			break;
 
+		}
+	}
+	else if(error == errorType::CANT_CONNECT ||
+		error == errorType::NON_EXISTENT_USER){
+		(*lcd) << (unsigned char*)"ERROR: CANNOT   CONNECT TO USER";
+
+	}
+	else if (error == errorType::NO_TWEETS_AVAILABLE) {
+		(*lcd) << (unsigned char*)"ERROR: NO TWEETSAVAILABLE";
 	}
 }
 
 void Twitter_LCD_Hitachi::control_NoChanges(void)
 {
 	static const char LOADING_ARRAY[] = "|{(<({|})>)}";
-	switch (status) {
-	case statusType::LOADING:
+	if (error == errorType::NONE) {
+		switch (status) {
+		case statusType::LOADING:
 
-		//actualiza simbolo de carga
-		if (system_clock::now() >= (loadSymbolTime + interval(LOADING_SIMBOL_INTERVAL))) {
-			loadSymbolTime = system_clock::now();
-			currentLoadSymbol++;
-			currentLoadSymbol %= sizeof(LOADING_ARRAY) - 1;
+			//actualiza simbolo de carga
+			if (system_clock::now() >= (loadSymbolTime + interval(LOADING_SIMBOL_INTERVAL))) {
+				loadSymbolTime = system_clock::now();
+				currentLoadSymbol++;
+				currentLoadSymbol %= sizeof(LOADING_ARRAY) - 1;
 
-			cursorPosition lastChar;
-			lastChar.row = 1;
-			lastChar.column = 15;
-			lcd->lcdSetCursorPosition(lastChar);
-			(*lcd) << (unsigned char)LOADING_ARRAY[currentLoadSymbol];
+				cursorPosition lastChar;
+				lastChar.row = 1;
+				lastChar.column = 15;
+				lcd->lcdSetCursorPosition(lastChar);
+				(*lcd) << (unsigned char)LOADING_ARRAY[currentLoadSymbol];
+			}
+
+			manage_scrollingPhrase(0);
+
+			break;
+
+		case statusType::SHOW_TWEET:
+			if ((alreadySeeingDate == false) && (system_clock::now() >= tweetStartTime + interval(TIME_BEFORE_DATE))) {
+				alreadySeeingDate = true;
+
+				cursorPosition start;
+				start.column = 0;
+				start.row = 0;
+				lcd->lcdSetCursorPosition(start);
+
+				(*lcd) << (unsigned char*)formattedDate.c_str();
+			}
+
+			manage_scrollingPhrase(1);
+
+			break;
+
+		default:
+			//Do nothing; el Display se queda mostrando el mensaje actual
+			break;
 		}
-
-		manage_scrollingPhrase(0);
-
-		break;
-
-	case statusType::SHOW_TWEET:
-		if ((alreadySeeingDate == false) && (system_clock::now() >= tweetStartTime + interval(TIME_BEFORE_DATE))) {
-			alreadySeeingDate = true;
-
-			cursorPosition start;
-			start.column = 0;
-			start.row = 0;
-			lcd->lcdSetCursorPosition(start);
-
-			(*lcd) << (unsigned char*)formattedDate.c_str();
-		}
-
-		manage_scrollingPhrase(1);
-
-		break;
-
-	default:
-		//Do nothing; el Display se queda mostrando el mensaje actual
-		break;
-	}
+	}// else if(error != NONE) {DO NOTHING}
 }
 
 void Twitter_LCD_Hitachi::set_scrollingPhrase(double setspeed, unsigned int line)
