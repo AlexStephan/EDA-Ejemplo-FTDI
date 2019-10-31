@@ -113,9 +113,6 @@
     <ClInclude Include="Twitter_Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Twitter_Model_TestForViewer_justForAlexXD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
