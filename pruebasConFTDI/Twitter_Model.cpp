@@ -26,7 +26,7 @@ void Twitter_Model::getBearerToken()
 		curl_easy_setopt(curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, sizeof("grant_type=client_credentials"));
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-		curl_easy_setopt(curl, CURLOPT_USERPWD, "mHNUHhKMeOMP8uSe1jI26Uzw8:cOlmgKA4Dv1ILoNQa8G3uHrmEZZ7IdrcXpgopZkH5sdRT0mQHx");
+		curl_easy_setopt(curl, CURLOPT_USERPWD, "a4aTMoBFL2zhFxpQzQFF3vOWd:wmQb14JbMG8koWmu65nVOrmKlJDJWaW7nw86da2cMKaXiqGoeT");
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, "Content-Type: application/x-www-form-urlencoded;charset=UTF-8");
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &token);
@@ -107,7 +107,7 @@ void Twitter_Model::stopLoading()
 	try {
 		tweets = json::parse(tweetsString);
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
 		json::iterator it = tweets.end();
 		it--;
