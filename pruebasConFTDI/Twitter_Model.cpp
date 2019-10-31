@@ -20,13 +20,15 @@ void Twitter_Model::getBearerToken()
 	if (curlEasy)
 	{
 		curl_easy_setopt(curlEasy, CURLOPT_URL, "https://api.twitter.com/oauth2/token");
-		curl_easy_setopt(curlEasy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
 		curl_easy_setopt(curlEasy, CURLOPT_FOLLOWLOCATION, 1L);
+		curl_easy_setopt(curlEasy, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 		curl_easy_setopt(curlEasy, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_easy_setopt(curlEasy, CURLOPT_USERPWD, "a4aTMoBFL2zhFxpQzQFF3vOWd:wmQb14JbMG8koWmu65nVOrmKlJDJWaW7nw86da2cMKaXiqGoeT");
+		struct curl_slist* list = NULL;
+		list = curl_slist_append(list, "Content-Type: application/x-www-form-urlencoded;charset=UTF-8");
+		curl_easy_setopt(curlEasy, CURLOPT_POSTFIELDSIZE, strlen("grant_type=client_credentials"));
 		curl_easy_setopt(curlEasy, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-		curl_easy_setopt(curlEasy, CURLOPT_POSTFIELDSIZE, 29L);
-		curl_easy_setopt(curlEasy, CURLOPT_USERPWD, "mHNUHhKMeOMP8uSe1jI26Uzw8:cOlmgKA4Dv1ILoNQa8G3uHrmEZZ7IdrcXpgopZkH5sdRT0mQHx");
-		curl_easy_setopt(curlEasy, CURLOPT_HTTPHEADER, "Content-Type: application/x-www-form-urlencoded;charset=UTF-8");
+		curl_easy_setopt(curlEasy, CURLOPT_HTTPHEADER, list);
 		curl_easy_setopt(curlEasy, CURLOPT_WRITEFUNCTION, curlWriteData);
 		curl_easy_setopt(curlEasy, CURLOPT_WRITEDATA, &token);
 		curl_easy_setopt(curlEasy, CURLOPT_SSL_VERIFYPEER, 0L);
@@ -47,21 +49,9 @@ void Twitter_Model::getBearerToken()
 void Twitter_Model::continueLoading()
 {
 	int runningHandles = 1;
-	int curlMessages;
-	CURLMsg* curlMsg;
-
-
 	curl_multi_perform(curl, &runningHandles);
-	while ((curlMsg = curl_multi_info_read(curl, &curlMessages))->msg != CURLMSG_DONE && curlMessages != 0)
-	{
-		if (curlMsg->data.result != CURLE_OK)
-		{
-			error = errorType::CANT_CONNECT;
-			this->notifyAllObservers();
-		}
-	}
 
-	if (curlMsg->msg == CURLMSG_DONE)
+	if (runningHandles == 0)
 	{
 		status = statusType::FINISHED_LOADING;
 		this->notifyAllObservers();
@@ -70,11 +60,11 @@ void Twitter_Model::continueLoading()
 
 void Twitter_Model::startLoading()
 {
-	tuit = nullptr;
-	date = nullptr;
+	tuit.clear();
+	date.clear();
 	currentTweetNumber = 1;
-	tweets = nullptr;
-	tweetsString = nullptr;
+	tweets = "";
+	tweetsString.clear();
 	curl = curl_multi_init();
 	curlEasy = curl_easy_init();
 
@@ -87,12 +77,19 @@ void Twitter_Model::startLoading()
 		url += '&';
 		url += twCount;
 		curl_easy_setopt(curlEasy, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curlEasy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteData);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &tweetsString);
-		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 		curl_easy_setopt(curlEasy, CURLOPT_FOLLOWLOCATION, 1L);
+		curl_easy_setopt(curlEasy, CURLOPT_SSL_VERIFYPEER, 0L);
+		curl_easy_setopt(curlEasy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
 		curl_easy_setopt(curlEasy, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		struct curl_slist* list = NULL;
+		std::string auth = "Authorization: Bearer ";
+		auth += token;
+		list = curl_slist_append(list, auth.c_str());
+		curl_easy_setopt(curlEasy, CURLOPT_HTTPHEADER, list);
+		curl_easy_setopt(curlEasy, CURLOPT_WRITEFUNCTION, curlWriteData);
+		curl_easy_setopt(curlEasy, CURLOPT_WRITEDATA, &tweetsString);
+
+
 		curl_multi_add_handle(curl, curlEasy);
 		status = statusType::LOADING;
 		this->notifyAllObservers();
