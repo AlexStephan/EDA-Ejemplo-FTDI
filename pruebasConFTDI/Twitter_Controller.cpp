@@ -13,7 +13,7 @@ Twitter_Controller::Twitter_Controller(Twitter_Model* m) :model(m) {
 	al_init_primitives_addon();
 	al_set_new_display_flags(ALLEGRO_RESIZABLE);
 
-	display = al_create_display(1280, 860);
+	display = al_create_display(1000, 600);
 	al_set_window_title(display, "EDA-LCD3");
 
 	queue = al_create_event_queue();
