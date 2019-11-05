@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 
 
 using json = nlohmann::json;
@@ -108,6 +109,9 @@ void Twitter_Model::stopLoading()
 
 	try {
 		tweets = json::parse(tweetsString);
+		std::ofstream output("tweet.json");
+		output << std::setw(4) << tweets << std::endl;
+		output.close();
 	}
 	catch (std::exception& e)
 	{
