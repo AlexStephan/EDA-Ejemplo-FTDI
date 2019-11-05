@@ -124,6 +124,7 @@ void Twitter_Model::stopLoading()
 	{
 		error = errorType::NO_TWEETS_AVAILABLE;
 	}
+	status = statusType::STOPPED_LOADING;
 	this->notifyAllObservers();
 }
 

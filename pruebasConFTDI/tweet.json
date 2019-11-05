@@ -1,0 +1,281 @@
+[
+    {
+        "contributors": null,
+        "coordinates": null,
+        "created_at": "Wed May 18 21:20:18 +0000 2011",
+        "display_text_range": [
+            0,
+            136
+        ],
+        "entities": {
+            "hashtags": [],
+            "symbols": [],
+            "urls": [],
+            "user_mentions": [
+                {
+                    "id": 105219620,
+                    "id_str": "105219620",
+                    "indices": [
+                        0,
+                        8
+                    ],
+                    "name": "Banesco Banco Universal",
+                    "screen_name": "Banesco"
+                }
+            ]
+        },
+        "favorite_count": 0,
+        "favorited": false,
+        "full_text": "@Banesco en agencia de parque aragua maracay ! El cajero numero 5 se burla de los clientes q el trabaja a su manera ! Q falta de respeto",
+        "geo": null,
+        "id": 70961936052928512,
+        "id_str": "70961936052928512",
+        "in_reply_to_screen_name": "Banesco",
+        "in_reply_to_status_id": null,
+        "in_reply_to_status_id_str": null,
+        "in_reply_to_user_id": 105219620,
+        "in_reply_to_user_id_str": "105219620",
+        "is_quote_status": false,
+        "lang": "es",
+        "place": null,
+        "retweet_count": 0,
+        "retweeted": false,
+        "source": "<a href=\"http://blackberry.com/twitter\" rel=\"nofollow\">Twitter for BlackBerry®</a>",
+        "truncated": false,
+        "user": {
+            "can_media_tag": null,
+            "contributors_enabled": false,
+            "created_at": "Fri Nov 06 14:16:17 +0000 2009",
+            "default_profile": true,
+            "default_profile_image": false,
+            "description": "",
+            "entities": {
+                "description": {
+                    "urls": []
+                }
+            },
+            "favourites_count": 0,
+            "follow_request_sent": null,
+            "followed_by": null,
+            "followers_count": 11,
+            "following": null,
+            "friends_count": 0,
+            "geo_enabled": false,
+            "has_extended_profile": false,
+            "id": 87948177,
+            "id_str": "87948177",
+            "is_translation_enabled": false,
+            "is_translator": false,
+            "lang": null,
+            "listed_count": 0,
+            "location": "",
+            "name": "jose gonzalez",
+            "notifications": null,
+            "profile_background_color": "C0DEED",
+            "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+            "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+            "profile_background_tile": false,
+            "profile_image_url": "http://pbs.twimg.com/profile_images/1161443590/chavo_del_8_normal.jpg",
+            "profile_image_url_https": "https://pbs.twimg.com/profile_images/1161443590/chavo_del_8_normal.jpg",
+            "profile_link_color": "1DA1F2",
+            "profile_sidebar_border_color": "C0DEED",
+            "profile_sidebar_fill_color": "DDEEF6",
+            "profile_text_color": "333333",
+            "profile_use_background_image": true,
+            "protected": false,
+            "screen_name": "tumamaentanga",
+            "statuses_count": 92,
+            "time_zone": null,
+            "translator_type": "none",
+            "url": null,
+            "utc_offset": null,
+            "verified": false
+        }
+    },
+    {
+        "contributors": null,
+        "coordinates": null,
+        "created_at": "Tue May 17 14:14:55 +0000 2011",
+        "display_text_range": [
+            0,
+            77
+        ],
+        "entities": {
+            "hashtags": [],
+            "symbols": [],
+            "urls": [],
+            "user_mentions": [
+                {
+                    "id": 33247276,
+                    "id_str": "33247276",
+                    "indices": [
+                        0,
+                        14
+                    ],
+                    "name": "Antonio Perera",
+                    "screen_name": "crackberrista"
+                }
+            ]
+        },
+        "favorite_count": 0,
+        "favorited": false,
+        "full_text": "@crackberrista ok sr. Muchas Gracias que tenga un excelente DIA... Agradecido",
+        "geo": null,
+        "id": 70492494659469312,
+        "id_str": "70492494659469312",
+        "in_reply_to_screen_name": "crackberrista",
+        "in_reply_to_status_id": 70492062964920320,
+        "in_reply_to_status_id_str": "70492062964920320",
+        "in_reply_to_user_id": 33247276,
+        "in_reply_to_user_id_str": "33247276",
+        "is_quote_status": false,
+        "lang": "es",
+        "place": null,
+        "retweet_count": 0,
+        "retweeted": false,
+        "source": "<a href=\"http://blackberry.com/twitter\" rel=\"nofollow\">Twitter for BlackBerry®</a>",
+        "truncated": false,
+        "user": {
+            "can_media_tag": null,
+            "contributors_enabled": false,
+            "created_at": "Fri Nov 06 14:16:17 +0000 2009",
+            "default_profile": true,
+            "default_profile_image": false,
+            "description": "",
+            "entities": {
+                "description": {
+                    "urls": []
+                }
+            },
+            "favourites_count": 0,
+            "follow_request_sent": null,
+            "followed_by": null,
+            "followers_count": 11,
+            "following": null,
+            "friends_count": 0,
+            "geo_enabled": false,
+            "has_extended_profile": false,
+            "id": 87948177,
+            "id_str": "87948177",
+            "is_translation_enabled": false,
+            "is_translator": false,
+            "lang": null,
+            "listed_count": 0,
+            "location": "",
+            "name": "jose gonzalez",
+            "notifications": null,
+            "profile_background_color": "C0DEED",
+            "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+            "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+            "profile_background_tile": false,
+            "profile_image_url": "http://pbs.twimg.com/profile_images/1161443590/chavo_del_8_normal.jpg",
+            "profile_image_url_https": "https://pbs.twimg.com/profile_images/1161443590/chavo_del_8_normal.jpg",
+            "profile_link_color": "1DA1F2",
+            "profile_sidebar_border_color": "C0DEED",
+            "profile_sidebar_fill_color": "DDEEF6",
+            "profile_text_color": "333333",
+            "profile_use_background_image": true,
+            "protected": false,
+            "screen_name": "tumamaentanga",
+            "statuses_count": 92,
+            "time_zone": null,
+            "translator_type": "none",
+            "url": null,
+            "utc_offset": null,
+            "verified": false
+        }
+    },
+    {
+        "contributors": null,
+        "coordinates": null,
+        "created_at": "Tue May 17 14:12:38 +0000 2011",
+        "display_text_range": [
+            0,
+            118
+        ],
+        "entities": {
+            "hashtags": [],
+            "symbols": [],
+            "urls": [],
+            "user_mentions": [
+                {
+                    "id": 33247276,
+                    "id_str": "33247276",
+                    "indices": [
+                        0,
+                        14
+                    ],
+                    "name": "Antonio Perera",
+                    "screen_name": "crackberrista"
+                }
+            ]
+        },
+        "favorite_count": 0,
+        "favorited": false,
+        "full_text": "@crackberrista pero asi se queda con todos los que le escribo ! Y cuando le da la gana es que llega.. Q puedo hacer ?☹",
+        "geo": null,
+        "id": 70491923000987649,
+        "id_str": "70491923000987649",
+        "in_reply_to_screen_name": "crackberrista",
+        "in_reply_to_status_id": 70491554367799296,
+        "in_reply_to_status_id_str": "70491554367799296",
+        "in_reply_to_user_id": 33247276,
+        "in_reply_to_user_id_str": "33247276",
+        "is_quote_status": false,
+        "lang": "es",
+        "place": null,
+        "retweet_count": 0,
+        "retweeted": false,
+        "source": "<a href=\"http://blackberry.com/twitter\" rel=\"nofollow\">Twitter for BlackBerry®</a>",
+        "truncated": false,
+        "user": {
+            "can_media_tag": null,
+            "contributors_enabled": false,
+            "created_at": "Fri Nov 06 14:16:17 +0000 2009",
+            "default_profile": true,
+            "default_profile_image": false,
+            "description": "",
+            "entities": {
+                "description": {
+                    "urls": []
+                }
+            },
+            "favourites_count": 0,
+            "follow_request_sent": null,
+            "followed_by": null,
+            "followers_count": 11,
+            "following": null,
+            "friends_count": 0,
+            "geo_enabled": false,
+            "has_extended_profile": false,
+            "id": 87948177,
+            "id_str": "87948177",
+            "is_translation_enabled": false,
+            "is_translator": false,
+            "lang": null,
+            "listed_count": 0,
+            "location": "",
+            "name": "jose gonzalez",
+            "notifications": null,
+            "profile_background_color": "C0DEED",
+            "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+            "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+            "profile_background_tile": false,
+            "profile_image_url": "http://pbs.twimg.com/profile_images/1161443590/chavo_del_8_normal.jpg",
+            "profile_image_url_https": "https://pbs.twimg.com/profile_images/1161443590/chavo_del_8_normal.jpg",
+            "profile_link_color": "1DA1F2",
+            "profile_sidebar_border_color": "C0DEED",
+            "profile_sidebar_fill_color": "DDEEF6",
+            "profile_text_color": "333333",
+            "profile_use_background_image": true,
+            "protected": false,
+            "screen_name": "tumamaentanga",
+            "statuses_count": 92,
+            "time_zone": null,
+            "translator_type": "none",
+            "url": null,
+            "utc_offset": null,
+            "verified": false
+        }
+    }
+]

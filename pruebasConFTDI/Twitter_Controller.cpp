@@ -106,6 +106,11 @@ void Twitter_Controller::cycle()
 			break;
 
 		case statusType::FINISHED_LOADING:
+			show_welcome_window = true;
+			show_loading_window = false;
+			show_tweet_window = true;
+			model->stopLoading();
+			break;
 		case statusType::STOPPED_LOADING:
 		case statusType::SHOW_TWEET:
 			show_welcome_window = true;
@@ -215,6 +220,8 @@ void Twitter_Controller::drawWindows()
 
 		ImGui::NewLine();
 		if (ImGui::Button("Mostrar")) {
+			model->setSpeed(vel);
+			model->setCurrentTweetNumber(showThisTweet);
 			model->readTweet();
 		}
 		if (ImGui::Button("Salir")) {
@@ -248,6 +255,8 @@ void Twitter_Controller::drawWindows()
 		ImGui::End();
 	}
 }
+
+
 
 ALLEGRO_DISPLAY* Twitter_Controller::getDisplay() {
 	return display;

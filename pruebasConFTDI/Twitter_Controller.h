@@ -52,5 +52,7 @@ private:
 	bool show_loading_window;
 	bool show_tweet_window;
 	bool show_error_window;
+
+
 };
 
