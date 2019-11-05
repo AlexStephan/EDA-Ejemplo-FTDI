@@ -76,6 +76,7 @@ void Twitter_Model::startLoading()
 		url += screenName;
 		url += '&';
 		url += twCount;
+		url += "&tweet_mode=extended";
 		curl_easy_setopt(curlEasy, CURLOPT_URL, url.c_str());
 		curl_easy_setopt(curlEasy, CURLOPT_FOLLOWLOCATION, 1L);
 		curl_easy_setopt(curlEasy, CURLOPT_SSL_VERIFYPEER, 0L);
@@ -143,7 +144,7 @@ const char* Twitter_Model::getUser()
 
 const char* Twitter_Model::getTuit() 
 {
-	tuit = tweets[currentTweetNumber - 1]["text"];
+	tuit = tweets[currentTweetNumber - 1]["full_text"];
 	return tuit.c_str();
 }
 
